@@ -41,13 +41,13 @@ nav div {
   height: 40px;
   z-index: 99;
 }
-.active {
-  color: rgba(55, 186, 177, 1);
-}
 .login {
-  width: 400px;
-  margin: 16px auto;
-  font-size: 16px;
+    position: absolute; 
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    font-size: 16px;
 }
 .login p {
   margin-top: 0;
@@ -73,6 +73,9 @@ nav div {
   background: #ebebeb;
   padding: 12px;
 }
+.container {
+    position: relative;
+  }
 .login p {
   padding: 12px;
 }
