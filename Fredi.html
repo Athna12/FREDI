@@ -20,48 +20,16 @@
   </nav>
 </section>
     <h1>FREDI</h1>
-	<form name="formClient" method="POST" action="enrClient.php">
-		
-		<fieldset>
-			<legend>Créer votre compte client :</legend>
-			<p>
-				<label for="lnom">Nom :</label>
-				<input type="text" id = "lnom" name="nom"/> *
-			</p>
-			<p>
-				<label for="lprenom">Prénom :</label>
-				<input type="text" id = "lprenom" name="prenom"  /> *
-			</p>
-			<p>
-				<label for="lmail">Adresse électronique :</label>
-				<input type="email" id="lmail" name="mail"  placeholder="confirmez"  /> *
-			</p>
-			<p>
-				<label for="lmdp">Mot de passe :</label>
-				<input type="password" id="lmdp" name="motPasse1" /> *
-			</p>
-			<p>
-				<span class="alinea">&nbsp;</span>
-				<input type="password" id="lmdp" name="motPasse2"  placeholder="confirmez" onChange="verifMdP()" /> * <span id='msgErreur2'></span>
-			</p>
-			<p>
-				<label for="ladresse">Adresse :</label>
-				<input type="text" id="ladresse" name="adresse"  placeholder="numéro, voie" /> *
-			</p>
-			<p>
-				<span class="alinea">&nbsp;</span>
-				<input type="text" name="CP" size="5" maxlength="5" placeholder="cp" />
-			</p>
-			<p>
-				<span class="alinea">&nbsp;</span>
-				<input type="text" name="ville" size="20" maxlength="20" placeholder="ville" /> *
-			</p>
-			<p>
-				
-				<input type="submit" id="bouton" value="Enregistrer" />
-				<input type="reset" value="Annuler" />
-			</p>
-		</fieldset>
-	</form>  
+		<div class="login">
+			<div class="login-triangle"></div>
+			
+			<h2 class="login-header">Log in</h2>
+		  
+			<form class="login-container" name="formClient" method="post" action="enrClient.php">
+			  <p><input type="email" placeholder="Email"></p>
+			  <p><input type="password" placeholder="Password"></p>
+			  <p><input type="submit" value="Log in"></p>
+			</form>
+		  </div> 
 </body>
 </html>
