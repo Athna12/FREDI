@@ -1,8 +1,8 @@
 <?php
 	$IPserveur="localhost";
-	$nomBase="base";
-	$nomUtil="sio2";
-	$mdpUtil="sio";
+	$nomBase="fredi";
+	$nomUtil="root";
+	$mdpUtil="";
 	
 	try
 		{
