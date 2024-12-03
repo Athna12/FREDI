@@ -57,6 +57,7 @@ nav div {
   width: 0;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom: -20px;
   border: 12px solid transparent;
   border-bottom-color: #28d;
 }
@@ -64,6 +65,7 @@ nav div {
   background: #28d;
   padding: 20px;
   font-size: 1.4em;
+  margin-bottom: 0px;
   font-weight: normal;
   text-align: center;
   text-transform: uppercase;
