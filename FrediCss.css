@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #FEF9FF; /* Couleur de fond principale */
+    color: #573D1C; /* Texte principal */
+}
+
+header {
+    background: #b0ca87; /* Couleur principale pour l'en-tête */
+    color: #627C85; /* Texte de l'en-tête */
+    padding: 1rem;
+    text-align: center;
+}
+
+header .logo {
+    margin-bottom: 1rem;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+header nav ul li a {
+    color: #FEF9FF; /* Couleur des liens dans l'en-tête */
+    text-decoration: none;
+}
+
+main {
+    padding: 2rem;
+}
+
+.intro, .features, .login {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #627C85; /* Couleur de fond des sections principales */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #573D1C; /* Texte dans les sections */
+}
+
+.intro h2, .features h2, .login h2 {
+    color: #809848; /* Titre des sections */
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #b0ca87; /* Fond du pied de page */
+    color: #FEF9FF; /* Texte du pied de page */
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #573D1C; /* Texte des labels */
+}
+
+
+a {
+    color: #809848; /* Liens généraux */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+body {
+    background: #456;
+    font-family: 'Open Sans', sans-serif;
+  }
+  section {
+    position: relative;
+    width: 640px;
+    margin: 50px auto;
+  }
+  nav {
+    width: 100%;
+  }
+  nav ul li {
+    display: inline-block;
+    list-style: none;
+    width: 160px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    border: rgba(255, 255, 255, 0);
+    color: #fff;
+    padding: 10px 0;
+    margin: -1px -5px -1px -1px;
+  }
+  nav ul li:hover {
+    /*border:1px dashed #fff;*/
+    background: rgba(255, 255, 255, .1);
+  }
+  nav ul {
+    border: 1px solid #fff;
+    position: absolute;
+    width: 100%;
+    padding: 0;
+    z-index: 100;
+  }
+  nav div {
+    position: absolute;
+    left: 0;
+    top: 16px;
+    background: #fff;
+    width: 162px;
+    height: 40px;
+    z-index: 99;
+  }
