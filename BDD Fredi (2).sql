@@ -1,38 +1,56 @@
-CREATE TABLE `Utilisateur`(
-    `numLicence` INT NOT NULL COMMENT 'NOT NULL',
-    `ligueSportive` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `nom` CHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `prenom` CHAR(255) NOT NULL,
-    `sexe` CHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `mail` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `motPasse` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `numTel` INT NOT NULL COMMENT 'NOT NULL',
-    `adresse` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `ville` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `codePostal` INT NOT NULL COMMENT 'NOT NULL',
-    PRIMARY KEY(`numLicence`)
+CREATE TABLE `Adhérent`(
+    `numero_licence` INT NOT NULL COMMENT 'NOT NULL',
+    `nom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
+    `prenom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
+    `numero_ligues` INT NOT NULL,
+    PRIMARY KEY(`numero_licence`)
 );
-CREATE TABLE `Borderau`(
-    `numOrdreRecu` VARCHAR(255) NOT NULL,
-    `date` DATE NOT NULL,
+CREATE TABLE `Demandeurs`(
+    `adresse_mail` CHAR(255) NOT NULL,
+    `nom` CHAR(255) NOT NULL,
+    `prenom` CHAR(255) NOT NULL,
+    `rue` CHAR(255) NOT NULL,
+    `cp` CHAR(255) NOT NULL,
+    `ville` CHAR(255) NOT NULL,
+    `num_recu` INT NOT NULL,
+    PRIMARY KEY(`adresse_mail`)
+);
+CREATE TABLE `Lien`(
+    `numero_licence` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `adresse_mail` CHAR(255) NOT NULL
+);
+CREATE TABLE `Lignes-frais`(
+    `adresse_mail` CHAR(255) NOT NULL,
+    `date` CHAR(255) NOT NULL,
     `motif` CHAR(255) NOT NULL,
     `trajet` CHAR(255) NOT NULL,
-    `kmParcourus` INT NOT NULL,
-    `coutTrajet` FLOAT(53) NOT NULL,
-    `peages` FLOAT(53) NOT NULL,
-    `repas` FLOAT(53) NOT NULL,
-    `hebergement` FLOAT(53) NOT NULL,
-    `total` FLOAT(53) NOT NULL,
-    `montantTotalFraisDeplacement` FLOAT(53) NOT NULL,
-    `id_numLicence` INT NOT NULL,
-    PRIMARY KEY(`numOrdreRecu`)
+    `km` FLOAT(53) NOT NULL,
+    `cout_peage` FLOAT(53) NOT NULL,
+    `cout_repas` FLOAT(53) NOT NULL,
+    `cout_hebergement` FLOAT(53) NOT NULL,
+    `km_valide` FLOAT(53) NOT NULL,
+    `peage_valide` FLOAT(53) NOT NULL,
+    `repas_valide` FLOAT(53) NOT NULL,
+    `hebergement_valide` FLOAT(53) NOT NULL,
+    PRIMARY KEY(`adresse_mail`)
 );
-CREATE TABLE `Clubs`(
-    `idClub` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nomClub` CHAR(255) NOT NULL,
-    `id_numLicence` INT NOT NULL
+CREATE TABLE `Ligues`(
+    `numero` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nom` CHAR(255) NOT NULL,
+    `sigle` CHAR(255) NOT NULL,
+    `president` CHAR(255) NOT NULL
+);
+CREATE TABLE `Motifs`(
+    `libelle` CHAR(255) NOT NULL,
+    PRIMARY KEY(`libelle`)
 );
 ALTER TABLE
-    `Clubs` ADD CONSTRAINT `clubs_id_numlicence_foreign` FOREIGN KEY(`id_numLicence`) REFERENCES `Utilisateur`(`numLicence`);
+    `Lien` ADD CONSTRAINT `lien_adresse_mail_foreign` FOREIGN KEY(`adresse_mail`) REFERENCES `Demandeurs`(`adresse_mail`);
 ALTER TABLE
-    `Borderau` ADD CONSTRAINT `borderau_id_numlicence_foreign` FOREIGN KEY(`id_numLicence`) REFERENCES `Utilisateur`(`numLicence`);
+    `Lien` ADD CONSTRAINT `lien_adresse_mail_foreign` FOREIGN KEY(`adresse_mail`) REFERENCES `Lignes-frais`(`adresse_mail`);
+ALTER TABLE
+    `Adhérent` ADD CONSTRAINT `adhérent_numero_ligues_foreign` FOREIGN KEY(`numero_ligues`) REFERENCES `Ligues`(`numero`);
+ALTER TABLE
+    `Lignes-frais` ADD CONSTRAINT `lignes_frais_motif_foreign` FOREIGN KEY(`motif`) REFERENCES `Motifs`(`libelle`);
+ALTER TABLE
+    `Adhérent` ADD CONSTRAINT `adhérent_numero_licence_foreign` FOREIGN KEY(`numero_licence`) REFERENCES `Lien`(`numero_licence`);
