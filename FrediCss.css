@@ -8,8 +8,8 @@ body {
 }
 
 header {
-    background: #b0ca87; /* Couleur principale pour l'en-tête */
-    color: #627C85; /* Texte de l'en-tête */
+    background: #809848; /* Couleur principale pour l'en-tête */
+    color: #FEF9FF; /* Texte de l'en-tête */
     padding: 1rem;
     text-align: center;
 }
@@ -40,20 +40,20 @@ main {
 .intro, .features, .login {
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: #627C85; /* Couleur de fond des sections principales */
+    background: #b0ca87; /* Couleur de fond des sections principales */
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: #573D1C; /* Texte dans les sections */
 }
 
 .intro h2, .features h2, .login h2 {
-    color: #809848; /* Titre des sections */
+    color: #627C85; /* Titre des sections */
 }
 
 footer {
     text-align: center;
     padding: 1rem;
-    background: #b0ca87; /* Fond du pied de page */
+    background: #627C85; /* Fond du pied de page */
     color: #FEF9FF; /* Texte du pied de page */
 }
 
@@ -63,6 +63,29 @@ form label {
     color: #573D1C; /* Texte des labels */
 }
 
+form input[type="email"], 
+form input[type="password"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #627C85; /* Bordure des champs de formulaire */
+    border-radius: 5px;
+    background: #FEF9FF; /* Fond des champs */
+    color: #573D1C; /* Texte des champs */
+}
+
+form button {
+    background: #809848; /* Bouton de formulaire */
+    color: #FEF9FF;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #b0ca87; /* Couleur au survol du bouton */
+}
 
 a {
     color: #809848; /* Liens généraux */
@@ -72,46 +95,3 @@ a {
 a:hover {
     text-decoration: underline;
 }
-body {
-    background: #456;
-    font-family: 'Open Sans', sans-serif;
-  }
-  section {
-    position: relative;
-    width: 640px;
-    margin: 50px auto;
-  }
-  nav {
-    width: 100%;
-  }
-  nav ul li {
-    display: inline-block;
-    list-style: none;
-    width: 160px;
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-    border: rgba(255, 255, 255, 0);
-    color: #fff;
-    padding: 10px 0;
-    margin: -1px -5px -1px -1px;
-  }
-  nav ul li:hover {
-    /*border:1px dashed #fff;*/
-    background: rgba(255, 255, 255, .1);
-  }
-  nav ul {
-    border: 1px solid #fff;
-    position: absolute;
-    width: 100%;
-    padding: 0;
-    z-index: 100;
-  }
-  nav div {
-    position: absolute;
-    left: 0;
-    top: 16px;
-    background: #fff;
-    width: 162px;
-    height: 40px;
-    z-index: 99;
-  }
