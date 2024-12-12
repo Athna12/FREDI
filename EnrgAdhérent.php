@@ -1,5 +1,5 @@
 <?php
-include("connexion.php");
+include("connexionBDD.php");
 $numero_licence = $_POST['numero_licence'];
 $mail = $_POST['mail'];
 $motPasse = $_POST['motPasse'];

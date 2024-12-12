@@ -24,10 +24,10 @@
 			
 			<h2 class="login-header">Créez votre compte</h2>
 		  
-			<form class="login-container" name="formClient" method="post" action="FrediPage1.php">
-			  <p><input type="number" placeholder="numero_licence"></p>
-        <p><input type="email" placeholder="Email"></p>
-			  <p><input type="password" placeholder="Mot de passe"></p>
+			<form class="login-container" name="formClient" method="post" action="EnrgAdhérent.php">
+			  <p><input name="numero_licence" type="tel" placeholder="Numéro de licence" pattern="[0-9]{12}" required></p>
+        <p><input name="mail" type="email" placeholder="username@beststartupever.com" pattern=".+@example\.com" size="30" required></p>
+			  <p><input name="motPasse" type="password" placeholder="Mot de passe" minlength="8" required></p>
 			  <p><input type="submit" value="Création du compte"></p>
 			</form>
 		  </div> 
