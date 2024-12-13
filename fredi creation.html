@@ -15,7 +15,7 @@
 		  
 			<form class="login-container" name="formClient" method="post" action="EnrgAdhérent.php">
 			  <p><input name="numero_licence" type="tel" placeholder="Numéro de licence" pattern="[0-9]{12}" required></p>
-        <p><input name="mail" type="email" placeholder="nomutilisateur@hotmail.com" pattern=".+@beststartupever.com" required></p>
+        <p><input name="mail" type="email" placeholder="nomutilisateur@hotmail.com" pattern="[^\s@]+@[^\s@]+\.[^\s@]+$" required></p>
 			  <p><input name="motPasse" type="password" placeholder="Mot de passe" minlength="8" required></p>
 			  <p><input type="submit" value="Création du compte"></p>
 			</form>
