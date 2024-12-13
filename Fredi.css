@@ -41,6 +41,22 @@ nav div {
   height: 40px;
   z-index: 99;
 }
+.btn {
+  background-color: #4CAF50;
+  color:white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+input[type="submit"] {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+input[type="submit"]:active {
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+transform: translateY(2px);
+}
+.btn:hover {
+  background-color: #FEF9FF;
+}
 .login {
     position: absolute; 
     top: 200px;
