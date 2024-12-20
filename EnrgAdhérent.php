@@ -1,10 +1,10 @@
 <?php
     include("connexionBDD.php");
     $numero_licence = $_POST['numero_licence'];
-    $mail = $_POST['mail'];
+    $mail = $_POST['adresse_mail'];
     $motPasse = $_POST['motPasse'];
 
-    $requete = "INSERT INTO Lien (num_licence, mail, mot_passe) 
+    $requete = "INSERT INTO Lien (num_licence, adresse_mail, mot_passe) 
     VALUES('$numero_licence','$mail','$motPasse')";
     $bdd -> exec(statement: $requete);
 ?>
