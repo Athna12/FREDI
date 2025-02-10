@@ -16,7 +16,7 @@ CREATE TABLE `Demandeurs`(
     PRIMARY KEY(`adresse_mail`)
 );
 CREATE TABLE `Lien`(
-    `num_licence` BIGINT UNSIGNED NOT NULL,
+    `num_licence` MEDIUMINT UNSIGNED NOT NULL,
     `adresse_mail` CHAR(255) NOT NULL,
     `mot_passe` VARCHAR(255) NOT NULL
 );
