@@ -1,5 +1,5 @@
 CREATE TABLE `Adhérent`(
-    `numero_licence` INT NOT NULL COMMENT 'NOT NULL',
+    `numero_licence` BIGINT NOT NULL COMMENT 'NOT NULL',
     `nom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
     `prenom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
     `numero_ligues` INT NOT NULL,
