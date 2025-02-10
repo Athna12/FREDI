@@ -6,5 +6,5 @@ $motPasse = $_POST['motPasse'];
 
 $requete = "INSERT INTO Lien (num_licence, mail, mot_passe) 
 VALUES('$numero_licence','$mail','$motPasse')";
-$bdd -> exec( statement: $requete);
+$bdd -> exec( statement, $requete);
 ?>
