@@ -1,5 +1,5 @@
 CREATE TABLE `Adhérent`(
-    `numero_licence` BIGINT NOT NULL COMMENT 'NOT NULL',
+    `numero_licence` INT NOT NULL COMMENT 'NOT NULL',
     `nom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
     `prenom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
     `numero_ligues` INT NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE `Demandeurs`(
     PRIMARY KEY(`adresse_mail`)
 );
 CREATE TABLE `Lien`(
-    `num_licence` INT UNSIGNED NOT NULL,
+    `num_licence` BIGINT UNSIGNED NOT NULL,
     `adresse_mail` CHAR(255) NOT NULL,
     `mot_passe` BIGINT NOT NULL
 );
