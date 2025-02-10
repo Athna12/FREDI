@@ -17,7 +17,7 @@ CREATE TABLE `Demandeurs`(
 );
 CREATE TABLE `Lien`(
     `num_licence` BIGINT UNSIGNED NOT NULL,
-    `adresse_mail` CHAR(255) NOT NULL,s
+    `adresse_mail` CHAR(255) NOT NULL,
     `mot_passe` VARCHAR(255) NOT NULL
 );
 CREATE TABLE `Lignes-frais`(
