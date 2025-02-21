@@ -1,9 +1,9 @@
 CREATE DATABASE IF NOT EXISTS fredi;
 
 CREATE TABLE IF NOT EXISTS`Adhérent`(
-    `numero_licence` VARCHAR(12) NOT NULL COMMENT 'NOT NULL',
-    `nom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
-    `prenom` VARCHAR(255) NOT NULL COMMENT 'NOT NULL',
+    `numero_licence` VARCHAR(12) NOT NULL,
+    `nom` VARCHAR(255) NOT NULL,
+    `prenom` VARCHAR(255) NOT NULL,
     `numero_ligues` INT NOT NULL,
     PRIMARY KEY(`numero_licence`)
 );
