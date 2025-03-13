@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `Adhérent`(
 );
 
 CREATE TABLE IF NOT EXISTS `Demandeurs`(
-    `adresse_mail` CHAR(255) NOT NULL,
+    `adresse_mail` VARCHAR(255) NOT NULL,
     `nom` CHAR(255) NOT NULL,
     `prenom` CHAR(255) NOT NULL,
     `rue` CHAR(255) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `Demandeurs`(
 
 CREATE TABLE IF NOT EXISTS `Lien`(
     `num_licence` VARCHAR(12) NOT NULL,
-    `adresse_mail` CHAR(255) NOT NULL,
+    `adresse_mail` VARCHAR(255) NOT NULL,
     `mot_passe` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`num_licence`),
     CONSTRAINT `lien_adresse_mail_foreign` FOREIGN KEY(`adresse_mail`) REFERENCES `Demandeurs`(`adresse_mail`),
