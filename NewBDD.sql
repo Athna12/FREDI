@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `Motifs`(
 CREATE TABLE IF NOT EXISTS`Adhérent`(
     `numero_licence` VARCHAR(12) NOT NULL,
     `nom` VARCHAR(255) NOT NULL,
-    `prenom` VARCHAR(255) NOT NULL,
+    `prenom` VARCHAR(255) NOT NULL ,
     `numero_ligues` INT NOT NULL,
     PRIMARY KEY(`numero_licence`)
 );
