@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `Ligues`(
 CREATE TABLE IF NOT EXISTS `Motifs`(
     `libelle` CHAR(255) NOT NULL,
     PRIMARY KEY(`libelle`)
-);CREATE DATABASE IF NOT EXISTS fredi;
+);
 
 CREATE TABLE IF NOT EXISTS`Adhérent`(
     `numero_licence` VARCHAR(12) NOT NULL,
