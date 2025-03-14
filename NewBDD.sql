@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `Adhérent`(
-    `numero_licence` VARCHAR(12) NOT NULL,
+    `numero_licence` INT NOT NULL,
     `nom` VARCHAR(255) NOT NULL,
     `prenom` VARCHAR(255) NOT NULL,
     `numero_ligues` INT NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `Demandeurs`(
 );
 
 CREATE TABLE IF NOT EXISTS `Lien`(
-    `num_licence` int NOT NULL,
+    `num_licence` INT NOT NULL,
     `adresse_mail` VARCHAR(255) NOT NULL,
     `mot_passe` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`num_licence`),
