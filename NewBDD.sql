@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS `Lien`(
     `num_licence` VARCHAR(12) NOT NULL,
     `adresse_mail` VARCHAR(255) NOT NULL,
     `mot_passe` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`num_licence`),
-    CONSTRAINT `lien_adresse_mail_foreign` FOREIGN KEY(`adresse_mail`) REFERENCES `Demandeurs`(`adresse_mail`),
-    CONSTRAINT `lien_num_licence_foreign` FOREIGN KEY(`num_licence`) REFERENCES `Adhérent`(`numero_licence`)
+    PRIMARY KEY (`num_licence`,'adresse_mail'),
+    FOREIGN KEY(`adresse_mail`) REFERENCES `Demandeurs`(`adresse_mail`),
+    FOREIGN KEY(`num_licence`) REFERENCES `Adhérent`(`numero_licence`)
 );
 
 CREATE TABLE IF NOT EXISTS `Lignes-frais`(
