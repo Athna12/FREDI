@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Motifs(
 CREATE TABLE IF NOT EXISTS lien(
    num_licence VARCHAR(50),
    adresse_mail VARCHAR(50),
-   mot_passe VARCHAR(50),
+   motPasse VARCHAR(50),
    PRIMARY KEY(num_licence, adresse_mail)
 );
 
