@@ -5,12 +5,12 @@ $mail = $_POST['adresse_mail'];
 $motPasse = $_POST['motPasse'];
 
 // Vérification des informations de connexion
-$sql = "SELECT adresse_mail, motPasse FROM Lien WHERE adresse_mail = :mail";
+$sql = "SELECT motPasse FROM Lien WHERE adresse_mail = :mail";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':adresse_mail' => $mail]);
 $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (password_verify($motPasse, 'motPasse')) {
+if ($utilisateur && password_verify($motPasse, $utilisateur['motPasse'])) {
     // Connexion réussie
     header('Location: FrediAcceuil.html'); // Redirection vers la page d'accueil
     exit();
