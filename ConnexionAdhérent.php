@@ -1,4 +1,5 @@
 <?php
+include("connexion.php");
 // Récupération des données du formulaire
 $mail = $_POST['adresse_mail'];
 $motPasse = $_POST['motPasse'];
