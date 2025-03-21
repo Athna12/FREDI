@@ -11,7 +11,7 @@ $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (password_verify($motdepasse, 'motdepasse')) {
     // Connexion réussie
-    header('Location: accueil.php'); // Redirection vers la page d'accueil
+    header('Location: FrediAcceuil.html'); // Redirection vers la page d'accueil
     exit();
 } else {
     // Échec de la connexion
