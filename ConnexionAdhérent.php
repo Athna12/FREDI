@@ -1,5 +1,5 @@
 <?php
-include("connexion.php");
+include("connexionBDD.php");
 // Récupération des données du formulaire
 $mail = $_POST['adresse_mail'];
 $motPasse = $_POST['motPasse'];
@@ -10,7 +10,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([':adresse_mail' => $mail]);
 $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (password_verify($motdepasse, 'motdepasse')) {
+if (password_verify($motPasse, 'motPasse')) {
     // Connexion réussie
     header('Location: FrediAcceuil.html'); // Redirection vers la page d'accueil
     exit();
