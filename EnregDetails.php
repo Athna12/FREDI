@@ -12,5 +12,5 @@ $CP = $_POST['CP'];
 
 $requete = "INSERT INTO utilisateur (numero_licence, ligueSportive, nom, prenom, sexe, numTel, adresse, codePostal, ville) 
 VALUES('$numero_licence','$ligueSportive', '$nom', '$prenom', '$sexe', '$numTel', '$adresse', '$CP', '$ville')";
-$bdd -> exec( statement: $requete);
+$bdd->exec($requete);
 ?>
