@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__.'/SessionManager.php';
+
+SessionManager::startSession();
 	$server="localhost";
 	$db="fredi";
 	$user="root";
