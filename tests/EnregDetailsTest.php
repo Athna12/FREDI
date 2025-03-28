@@ -1,12 +1,11 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
-class EnregDetailsTest extends TestCase {
-    public function testInsertUtilisateur() {
-        // Désactive les sessions pour ce test
-        @session_start();
-        $_SESSION = [];
-        // 1. Préparation des données de test
+class EnregDetailsTest extends TestCase
+{
+    protected function setUp(): void
+    {
+        // 1. Simule les données POST
         $_POST = [
             'numero_licence' => '12345',
             'ligueSportive' => 'Football',
@@ -18,12 +17,28 @@ class EnregDetailsTest extends TestCase {
             'ville' => 'Paris',
             'CP' => '75000'
         ];
-        // Capture la sortie
+        
+        // 2. Initialise une session vide
+        $_SESSION = [];
+        
+        // 3. Mock de la variable $bdd
+        global $bdd;
+        $bdd = $this->createMock(PDO::class);
+        $bdd->method('exec')->willReturn(1);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testInsertUtilisateur()
+    {
+        // 4. Capture la sortie
         ob_start();
         include __DIR__.'/../PHP/EnregDetails.php';
         $output = ob_get_clean();
-
-        $this->assertEmpty($output);
+        
+        // 5. Vérifications
+        $this->assertEmpty($output, "Le script ne doit pas afficher d'erreur");
     }
 }
-?>
