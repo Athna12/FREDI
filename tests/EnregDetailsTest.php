@@ -3,6 +3,8 @@ use PHPUnit\Framework\TestCase;
 
 class EnregDetailsTest extends TestCase
 {
+    protected $bdd; // Déclaration de la propriété
+
     protected function setUp(): void
     {
         // 1. Initialise les variables globales
@@ -20,7 +22,7 @@ class EnregDetailsTest extends TestCase
         
         $_SESSION = [];
         
-        // 2. Mock de PDO
+        // 2. Crée le mock PDO et le stocke dans la propriété
         $this->bdd = $this->createMock(PDO::class);
         $this->bdd->method('exec')->willReturn(1);
     }
@@ -37,6 +39,6 @@ class EnregDetailsTest extends TestCase
         $output = ob_get_clean();
         
         // 5. Vérifications
-        $this->assertEmpty($output);
+        $this->assertEmpty($output, "Aucune erreur ne devrait être affichée");
     }
 }
