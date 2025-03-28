@@ -1,9 +1,9 @@
 <?php
 session_start();
-	$IPserveur="localhost";
-	$nomBase="fredi";
-	$nomUtil="root";
-	$mdpUtil="";
+	$host="localhost";
+	$dbname="fredi";
+	$user="root";
+	$password="";
 	
 	try
 		{

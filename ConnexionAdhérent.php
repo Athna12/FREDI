@@ -6,9 +6,9 @@ $motPasse = $_POST['motPasse'];
 
 // Vérification des informations de connexion
 $requete = "SELECT motPasse FROM Lien WHERE adresse_mail = :mail";
-$stmt = $pdo->prepare($requete);
-$stmt -> exec(statement: $requete);
-$utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt = $bdd->prepare($requete);
+$resultEnr = $stmt->execute();
+$utilisateur = $stmt->fetchAll();
 
 if ($utilisateur && password_verify($motPasse, $utilisateur['motPasse'])) {
     // Connexion réussie
