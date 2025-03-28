@@ -16,7 +16,7 @@ class EnregDetailsTest extends TestCase {
         ];
 
         ob_start(); // Démarre la capture de sortie
-        include __DIR__ . '/../EnregDetails.php'; // Inclut le script PHP à tester
+        include("EnregDetails.php"); // Inclut le script PHP à tester
         $output = ob_get_clean(); // Récupère et vide la sortie du script
 
         $this->assertEmpty($output, "Le script ne doit pas renvoyer d'erreur.");
