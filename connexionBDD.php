@@ -1,14 +1,14 @@
 <?php
 session_start();
-	$host="localhost";
-	$dbname="fredi";
+	$server="localhost";
+	$db="fredi";
 	$user="root";
 	$password="";
 	
 	try
 		{
 			//	connexion au serveur de données et à la base
-				$bdd = new PDO("mysql:host=$IPserveur;dbname=$nomBase;charset=utf8", $nomUtil,$mdpUtil,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+				$bdd = new PDO("mysql:host=$server; dbname=$db;charset=utf8", $user,$password,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		}
 	//	gestion d’erreur
 	catch (Exception $e)
