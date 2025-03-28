@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "/connexion.php";
+include __DIR__ . "/connexionBDD.php";
 $numero_licence = $_POST['numero_licence'];
 $ligueSportive = $_POST['ligueSportive'];
 $nom = $_POST['nom'];
