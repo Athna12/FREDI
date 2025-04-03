@@ -59,7 +59,7 @@ class EnregDetailsTest extends TestCase
         $output = ob_get_clean();
 
         // Vérifie qu'un message d'erreur est affiché
-        $this->assertStringContainsString('Erreur', $output, "Une erreur aurait dû être affichée pour un champ vide.");
+        $this->assertStringContainsString('Erreur : Tous les champs obligatoires doivent être remplis.', $output, "Une erreur aurait dû être affichée pour un champ vide.");
     }
 
     public function testRedirectionApresInsertion()
