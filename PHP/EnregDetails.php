@@ -1,6 +1,11 @@
 <?php
 include __DIR__ . "/connexionBDD.php";
 
+// Debugging: Affiche le contenu de $_POST pour vérifier les données reçues
+if (defined('PHPUNIT_TEST')) {
+    file_put_contents('php://stderr', print_r($_POST, true));
+}
+
 // Validation des données d'entrée
 // Vérifie que tous les champs obligatoires sont remplis
 if (empty($_POST['numero_licence']) || empty($_POST['ligueSportive']) || empty($_POST['nom']) || 

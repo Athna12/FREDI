@@ -63,8 +63,14 @@ class EnregDetailsTest extends TestCase
         require __DIR__.'/../PHP/EnregDetails.php';
         $output = ob_get_clean();
 
+        // Capture les erreurs ou les logs de débogage
+        $debugOutput = file_get_contents('php://stderr');
+
         // Vérifie qu'un message d'erreur est affiché
         $this->assertStringContainsString('Erreur : Tous les champs obligatoires doivent être remplis.', $output, "Une erreur aurait dû être affichée pour un champ vide.");
+
+        // Vérifie que $_POST contient les données attendues
+        $this->assertStringContainsString('numero_licence', $debugOutput, "Les données POST ne sont pas correctement transmises.");
     }
 
     public function testRedirectionApresInsertion()
