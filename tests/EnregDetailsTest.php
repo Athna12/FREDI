@@ -12,6 +12,11 @@ class EnregDetailsTest extends TestCase
         
         // Réinitialise la session pour chaque test
         $_SESSION = [];
+
+        // Mock (simule la base de donée) de la base de données pour les tests
+        $GLOBALS['bdd'] = $this->createMock(PDO::class);
+        $GLOBALS['bdd']->method('prepare')->willReturn($this->createMock(PDOStatement::class));
+        $GLOBALS['bdd']->method('exec')->willReturn(true);
     }
 
     /**
