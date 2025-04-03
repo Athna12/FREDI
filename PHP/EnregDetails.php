@@ -8,11 +8,12 @@ if (defined('PHPUNIT_TEST')) {
 
 // Validation des données d'entrée
 // Vérifie que tous les champs obligatoires sont remplis
-if (empty($_POST['numero_licence']) || empty($_POST['ligueSportive']) || empty($_POST['nom']) || 
-    empty($_POST['prenom']) || empty($_POST['sexe']) || empty($_POST['numTel']) || 
-    empty($_POST['adresse']) || empty($_POST['ville']) || empty($_POST['CP'])) {
-    echo "Erreur : Tous les champs obligatoires doivent être remplis.";
-    exit(); // Arrête l'exécution si un champ est vide
+$requiredFields = ['numero_licence', 'ligueSportive', 'nom', 'prenom', 'sexe', 'numTel', 'adresse', 'ville', 'CP'];
+foreach ($requiredFields as $field) {
+    if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+        echo "Erreur : Tous les champs obligatoires doivent être remplis.";
+        exit(); // Arrête l'exécution si un champ est vide
+    }
 }
 
 // Vérifie si un utilisateur avec le même numéro de licence existe déjà
