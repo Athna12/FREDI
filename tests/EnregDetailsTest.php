@@ -5,8 +5,10 @@ class EnregDetailsTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Définit la constante pour indiquer que les tests PHPUnit sont en cours
-        define('PHPUNIT_TEST', true);
+        // Vérifie si la constante PHPUNIT_TEST est déjà définie
+        if (!defined('PHPUNIT_TEST')) {
+            define('PHPUNIT_TEST', true);
+        }
         
         // Données de test par défaut pour les tests
         $_POST = [
