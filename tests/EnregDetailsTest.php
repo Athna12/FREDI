@@ -10,7 +10,13 @@ class EnregDetailsTest extends TestCase
             define('PHPUNIT_TEST', true);
         }
         
-        // Données de test par défaut pour les tests
+        // Réinitialise la session pour chaque test
+        $_SESSION = [];
+    }
+
+    public function testInsertUtilisateur()
+    {
+        // Réinitialise $_POST avec des données valides
         $_POST = [
             'numero_licence' => '12345',
             'ligueSportive' => 'Football',
@@ -22,13 +28,7 @@ class EnregDetailsTest extends TestCase
             'ville' => 'Paris',
             'CP' => '75000'
         ];
-        
-        // Réinitialise la session pour chaque test
-        $_SESSION = [];
-    }
 
-    public function testInsertUtilisateur()
-    {
         // Teste si l'insertion d'un utilisateur ne produit pas de sortie
         ob_start();
         require __DIR__.'/../PHP/EnregDetails.php';
@@ -40,7 +40,7 @@ class EnregDetailsTest extends TestCase
 
     public function testValidationDesDonnees()
     {
-        // Simule un cas où le champ 'numero_licence' est vide
+        // Réinitialise $_POST avec un champ vide
         $_POST = [
             'numero_licence' => '', // Champ vide
             'ligueSportive' => 'Football',
@@ -64,7 +64,7 @@ class EnregDetailsTest extends TestCase
 
     public function testRedirectionApresInsertion()
     {
-        // Simule une insertion réussie avec des données valides
+        // Réinitialise $_POST avec des données valides
         $_POST = [
             'numero_licence' => '12345',
             'ligueSportive' => 'Football',
@@ -88,7 +88,7 @@ class EnregDetailsTest extends TestCase
 
     public function testReglesMetier()
     {
-        // Simule un cas où un utilisateur avec le même numéro de licence existe déjà
+        // Réinitialise $_POST avec des données valides
         $_POST = [
             'numero_licence' => '12345',
             'ligueSportive' => 'Football',
