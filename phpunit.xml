@@ -5,4 +5,13 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">PHP</directory>
+        </include>
+        <report>
+            <text outputFile="php://stdout"/>
+            <html outputDirectory="coverage-report"/>
+        </report>
+    </coverage>
 </phpunit>
