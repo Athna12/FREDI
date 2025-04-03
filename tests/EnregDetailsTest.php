@@ -14,10 +14,14 @@ class EnregDetailsTest extends TestCase
         $_SESSION = [];
     }
 
-    public function testInsertUtilisateur()
+    /**
+     * Initialise $_POST avec des données par défaut, avec possibilité de les surcharger.
+     * @param array $overrides Données à surcharger dans $_POST.
+     */
+    private function setPostData(array $overrides = []): void
     {
-        // Réinitialise $_POST avec des données valides
-        $_POST = [
+        // Données par défaut pour les tests
+        $_POST = array_merge([
             'numero_licence' => '12345',
             'ligueSportive' => 'Football',
             'nom' => 'Dupont',
@@ -27,7 +31,13 @@ class EnregDetailsTest extends TestCase
             'adresse' => '10 rue des tests',
             'ville' => 'Paris',
             'CP' => '75000'
-        ];
+        ], $overrides);
+    }
+
+    public function testInsertUtilisateur()
+    {
+        // Initialise $_POST avec des données valides
+        $this->setPostData();
 
         // Teste si l'insertion d'un utilisateur ne produit pas de sortie
         ob_start();
@@ -40,18 +50,8 @@ class EnregDetailsTest extends TestCase
 
     public function testValidationDesDonnees()
     {
-        // Réinitialise $_POST avec un champ vide
-        $_POST = [
-            'numero_licence' => '', // Champ vide
-            'ligueSportive' => 'Football',
-            'nom' => 'Dupont',
-            'prenom' => 'Jean',
-            'sexe' => 'M',
-            'numTel' => '0606060606',
-            'adresse' => '10 rue des tests',
-            'ville' => 'Paris',
-            'CP' => '75000'
-        ];
+        // Initialise $_POST avec un champ vide
+        $this->setPostData(['numero_licence' => '']); // Champ vide
 
         // Capture la sortie du script
         ob_start();
@@ -64,18 +64,8 @@ class EnregDetailsTest extends TestCase
 
     public function testRedirectionApresInsertion()
     {
-        // Réinitialise $_POST avec des données valides
-        $_POST = [
-            'numero_licence' => '12345',
-            'ligueSportive' => 'Football',
-            'nom' => 'Dupont',
-            'prenom' => 'Jean',
-            'sexe' => 'M',
-            'numTel' => '0606060606',
-            'adresse' => '10 rue des tests',
-            'ville' => 'Paris',
-            'CP' => '75000'
-        ];
+        // Initialise $_POST avec des données valides
+        $this->setPostData();
 
         // Exécute le script et vérifie les en-têtes HTTP
         ob_start();
@@ -88,18 +78,8 @@ class EnregDetailsTest extends TestCase
 
     public function testReglesMetier()
     {
-        // Réinitialise $_POST avec des données valides
-        $_POST = [
-            'numero_licence' => '12345',
-            'ligueSportive' => 'Football',
-            'nom' => 'Dupont',
-            'prenom' => 'Jean',
-            'sexe' => 'M',
-            'numTel' => '0606060606',
-            'adresse' => '10 rue des tests',
-            'ville' => 'Paris',
-            'CP' => '75000'
-        ];
+        // Initialise $_POST avec des données valides
+        $this->setPostData();
 
         // Mock de la base de données pour simuler une insertion échouée
         $mockBdd = $this->createMock(PDO::class);
