@@ -69,8 +69,8 @@ class EnregDetailsTest extends TestCase
         // Vérifie qu'un message d'erreur est affiché
         $this->assertStringContainsString('Erreur : Tous les champs obligatoires doivent être remplis.', $output, "Une erreur aurait dû être affichée pour un champ vide.");
 
-        // Vérifie que $_POST contient les données attendues
-        $this->assertStringContainsString('numero_licence', $debugOutput, "Les données POST ne sont pas correctement transmises.");
+        // Vérifie que la validation a échoué pour le champ attendu
+        $this->assertStringContainsString('Validation échouée pour le champ : numero_licence', $debugOutput, "La validation n'a pas échoué comme prévu pour le champ 'numero_licence'.");
     }
 
     public function testRedirectionApresInsertion()

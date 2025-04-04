@@ -11,6 +11,9 @@ if (defined('PHPUNIT_TEST')) {
 $requiredFields = ['numero_licence', 'ligueSportive', 'nom', 'prenom', 'sexe', 'numTel', 'adresse', 'ville', 'CP'];
 foreach ($requiredFields as $field) {
     if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+        if (defined('PHPUNIT_TEST')) {
+            file_put_contents('php://stderr', "Validation échouée pour le champ : $field\n");
+        }
         echo "Erreur : Tous les champs obligatoires doivent être remplis.";
         exit(); // Arrête l'exécution si un champ est vide
     }
