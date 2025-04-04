@@ -5,25 +5,41 @@ class EnregDetailsTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Vérifie si la constante PHPUNIT_TEST est déjà définie
         if (!defined('PHPUNIT_TEST')) {
             define('PHPUNIT_TEST', true);
         }
         
-        // Réinitialise la session pour chaque test
         $_SESSION = [];
 
-        // Crée un mock PDOStatement avec les méthodes existantes
+        // Create a proper PDOStatement mock
         $mockStatement = $this->getMockBuilder(PDOStatement::class)
-            ->onlyMethods(['execute', 'fetchColumn'])
-            ->getMock();
-        $mockStatement->method('execute')->willReturn(true);
-        $mockStatement->method('fetchColumn')->willReturn(0);
+            ->disableOriginalConstructor()
+            ->setMethods(['execute', 'fetchColumn'])
+            ->getMockForAbstractClass();
 
-        // Mock de la base de données pour les tests
-        $GLOBALS['bdd'] = $this->createMock(PDO::class);
-        $GLOBALS['bdd']->method('prepare')->willReturn($mockStatement);
-        $GLOBALS['bdd']->method('exec')->willReturn(true);
+        $mockStatement->expects($this->any())
+            ->method('execute')
+            ->willReturn(true);
+
+        $mockStatement->expects($this->any())
+            ->method('fetchColumn')
+            ->willReturn(0);
+
+        // Configure PDO mock to return our statement mock
+        $mockPDO = $this->getMockBuilder(PDO::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['prepare', 'exec'])
+            ->getMock();
+
+        $mockPDO->expects($this->any())
+            ->method('prepare')
+            ->willReturn($mockStatement);
+
+        $mockPDO->expects($this->any())
+            ->method('exec')
+            ->willReturn(true);
+
+        $GLOBALS['bdd'] = $mockPDO;
     }
 
     /**
