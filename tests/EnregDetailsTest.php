@@ -19,9 +19,13 @@ class EnregDetailsTest extends TestCase
         $mockStatement->method('fetchAll')->willReturn([['motPasse' => password_hash('test123', PASSWORD_DEFAULT)]]); // Simule un mot de passe haché
 
         $GLOBALS['bdd'] = $this->createMock(PDO::class);
-        $GLOBALS['bdd']->method('prepare')->willReturn($mockStatement);
-        $GLOBALS['bdd']->method('exec')->willReturn(true);
-        $GLOBALS['bdd']->method('query')->willReturn($mockStatement); // Simule la méthode query
+        $mockBdd = $this->createMock(PDO::class);
+        $mockBdd->expects($this->any())
+            ->method('prepare')
+            ->willReturn($mockStatement);
+        $GLOBALS['bdd'] = $mockBdd;
+        $mockBdd->method('exec')->willReturn(true);
+        $mockBdd->method('query')->willReturn($mockStatement); // Simule la méthode query
     }
 
     /**
