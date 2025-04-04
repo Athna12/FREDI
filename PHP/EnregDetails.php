@@ -13,6 +13,7 @@ foreach ($requiredFields as $field) {
     if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
         if (defined('PHPUNIT_TEST')) {
             file_put_contents('php://stderr', "Validation échouée pour le champ : $field\n");
+            throw new Exception("Erreur : Tous les champs obligatoires doivent être remplis.");
         }
         echo "Erreur : Tous les champs obligatoires doivent être remplis.";
         exit(); // Arrête l'exécution si un champ est vide

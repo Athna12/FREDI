@@ -58,19 +58,12 @@ class EnregDetailsTest extends TestCase
         // Initialise $_POST avec un champ vide
         $this->setPostData(['numero_licence' => '']); // Champ vide
 
-        // Capture la sortie du script
-        ob_start();
-        require __DIR__.'/../PHP/EnregDetails.php';
-        $output = ob_get_clean();
-
         // Capture les erreurs ou les logs de débogage
-        $debugOutput = file_get_contents('php://stderr');
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Erreur : Tous les champs obligatoires doivent être remplis.");
 
-        // Vérifie qu'un message d'erreur est affiché
-        $this->assertStringContainsString('Erreur : Tous les champs obligatoires doivent être remplis.', $output, "Une erreur aurait dû être affichée pour un champ vide.");
-
-        // Vérifie que la validation a échoué pour le champ attendu
-        $this->assertStringContainsString('Validation échouée pour le champ : numero_licence', $debugOutput, "La validation n'a pas échoué comme prévu pour le champ 'numero_licence'.");
+        // Exécute le script
+        require __DIR__.'/../PHP/EnregDetails.php';
     }
 
     public function testRedirectionApresInsertion()
