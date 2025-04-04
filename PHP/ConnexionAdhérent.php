@@ -1,5 +1,11 @@
 <?php
 include("connexionBDD.php");
+// Vérifie que les variables POST nécessaires sont définies
+if (!isset($_POST['adresse_mail']) || !isset($_POST['motPasse'])) {
+    echo "Erreur : Les données de connexion sont manquantes.";
+    exit();
+}
+
 // Récupération des données du formulaire
 $mail = $_POST['adresse_mail'];
 $motPasse = $_POST['motPasse'];
