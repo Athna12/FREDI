@@ -13,9 +13,9 @@ class EnregDetailsTest extends TestCase
         // Réinitialise la session pour chaque test
         $_SESSION = [];
 
-        // Crée un mock PDOStatement qui implémente correctement fetchColumn
+        // Crée un mock PDOStatement avec les méthodes existantes
         $mockStatement = $this->getMockBuilder(PDOStatement::class)
-            ->addMethods(['fetchColumn'])
+            ->onlyMethods(['execute', 'fetchColumn'])
             ->getMock();
         $mockStatement->method('execute')->willReturn(true);
         $mockStatement->method('fetchColumn')->willReturn(0);
