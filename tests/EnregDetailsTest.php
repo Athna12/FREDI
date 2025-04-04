@@ -69,7 +69,7 @@ class EnregDetailsTest extends TestCase
 
         // Teste si l'insertion d'un utilisateur ne produit pas de sortie
         ob_start();
-        require __DIR__.'/../PHP/EnregDetails.php';
+        require __DIR__.'/../HTML/EnregDetails.php';
         $output = ob_get_clean();
         
         // Vérifie que la sortie est vide
@@ -86,7 +86,7 @@ class EnregDetailsTest extends TestCase
         $this->expectExceptionMessage("Erreur : Tous les champs obligatoires doivent être remplis.");
 
         // Exécute le script
-        require __DIR__.'/../PHP/EnregDetails.php';
+        require __DIR__.'/../HTML/EnregDetails.php';
     }
 
     public function testRedirectionApresInsertion()
@@ -96,7 +96,7 @@ class EnregDetailsTest extends TestCase
 
         // Exécute le script et vérifie les en-têtes HTTP
         ob_start();
-        require __DIR__.'/../PHP/EnregDetails.php';
+        require __DIR__.'/../HTML/EnregDetails.php';
         ob_end_clean();
 
         // Vérifie qu'une redirection HTTP a été envoyée
@@ -117,7 +117,7 @@ class EnregDetailsTest extends TestCase
 
         // Capture la sortie du script
         ob_start();
-        require __DIR__.'/../PHP/EnregDetails.php';
+        require __DIR__.'/../HTML/EnregDetails.php';
         $output = ob_get_clean();
 
         // Vérifie qu'un message d'erreur est affiché
