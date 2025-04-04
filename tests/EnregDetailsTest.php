@@ -13,19 +13,17 @@ class EnregDetailsTest extends TestCase
         // Réinitialise la session pour chaque test
         $_SESSION = [];
 
-        // Mock de la base de données pour les tests
-        $mockStatement = $this->createMock(PDOStatement::class);
-        $mockStatement->method('fetchColumn')->willReturn(0); // Simule qu'aucun utilisateur n'existe
-        $mockStatement->method('fetchAll')->willReturn([['motPasse' => password_hash('test123', PASSWORD_DEFAULT)]]); // Simule un mot de passe haché
+        // Crée un mock PDOStatement qui implémente correctement fetchColumn
+        $mockStatement = $this->getMockBuilder(PDOStatement::class)
+            ->addMethods(['fetchColumn'])
+            ->getMock();
+        $mockStatement->method('execute')->willReturn(true);
+        $mockStatement->method('fetchColumn')->willReturn(0);
 
+        // Mock de la base de données pour les tests
         $GLOBALS['bdd'] = $this->createMock(PDO::class);
-        $mockBdd = $this->createMock(PDO::class);
-        $mockBdd->expects($this->any())
-            ->method('prepare')
-            ->willReturn($mockStatement);
-        $GLOBALS['bdd'] = $mockBdd;
-        $mockBdd->method('exec')->willReturn(true);
-        $mockBdd->method('query')->willReturn($mockStatement); // Simule la méthode query
+        $GLOBALS['bdd']->method('prepare')->willReturn($mockStatement);
+        $GLOBALS['bdd']->method('exec')->willReturn(true);
     }
 
     /**
