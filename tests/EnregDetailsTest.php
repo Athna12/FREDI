@@ -11,10 +11,10 @@ class EnregDetailsTest extends TestCase
         
         $_SESSION = [];
 
-        // Create a proper PDOStatement mock
+        // Create a proper PDOStatement mock with all needed methods
         $mockStatement = $this->getMockBuilder(PDOStatement::class)
             ->disableOriginalConstructor()
-            ->setMethods(['execute', 'fetchColumn'])
+            ->onlyMethods(['execute', 'fetchColumn', 'errorInfo'])
             ->getMockForAbstractClass();
 
         $mockStatement->expects($this->any())
@@ -25,10 +25,14 @@ class EnregDetailsTest extends TestCase
             ->method('fetchColumn')
             ->willReturn(0);
 
-        // Configure PDO mock to return our statement mock
+        $mockStatement->expects($this->any())
+            ->method('errorInfo')
+            ->willReturn([0, null, null]);
+
+        // Configure PDO mock with all needed methods
         $mockPDO = $this->getMockBuilder(PDO::class)
             ->disableOriginalConstructor()
-            ->setMethods(['prepare', 'exec'])
+            ->onlyMethods(['prepare', 'exec', 'errorInfo'])
             ->getMock();
 
         $mockPDO->expects($this->any())
@@ -38,6 +42,10 @@ class EnregDetailsTest extends TestCase
         $mockPDO->expects($this->any())
             ->method('exec')
             ->willReturn(true);
+
+        $mockPDO->expects($this->any())
+            ->method('errorInfo')
+            ->willReturn([0, null, null]);
 
         $GLOBALS['bdd'] = $mockPDO;
     }
