@@ -11,8 +11,8 @@ $mail = $_POST['adresse_mail'];
 $motPasse = $_POST['motPasse'];
 
 // Vérification des informations de connexion
-$requete = $bdd->query( "SELECT motPasse FROM Lien WHERE adresse_mail = :mail");
-$utilisateur = $requete->fetchAll();
+$requete = $bdd->prepare( "SELECT motPasse FROM Lien WHERE adresse_mail = :mail");
+$utilisateur = $requete->fetch();
 
 if ($utilisateur && password_verify($motPasse, $utilisateur['motPasse'])) {
     // Connexion réussie
