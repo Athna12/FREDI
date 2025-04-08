@@ -23,9 +23,9 @@ foreach ($requiredFields as $field) {
 // Vérifie si un utilisateur avec le même numéro de licence existe déjà
 $numero_licence = $_POST['numero_licence'];
 
-// Validation du format du numéro de licence (12 caractères alphanumériques)
-if (!preg_match('/^[A-Za-z0-9]{12}$/', $numero_licence)) {
-    echo "Erreur : Le numéro de licence doit contenir exactement 12 caractères (lettres ou chiffres).";
+// Validation du format du numéro de licence (format plus flexible)
+if (!preg_match('/^[A-Za-z0-9]{6,12}$/', $numero_licence)) {
+    echo "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères (lettres ou chiffres).";
     exit();
 }
 

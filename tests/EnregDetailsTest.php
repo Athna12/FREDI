@@ -37,13 +37,23 @@ class EnregDetailsTest extends TestCase
 
     public function testFormatNumeroLicenceInvalide()
     {
-        $this->setPostData(['numero_licence' => 'ABC123']); // Format invalide
+        $this->setPostData([
+            'numero_licence' => 'AB1265', // Trop court (moins de 6 caractères)
+            'ligueSportive' => 'Football',
+            'nom' => 'Dupont',
+            'prenom' => 'Jean',
+            'sexe' => 'M',
+            'numTel' => '0606060606',
+            'adresse' => '10 rue des tests',
+            'ville' => 'Paris',
+            'CP' => '75000'
+        ]);
         
         ob_start();
         require __DIR__.'/../HTML/EnregDetails.php';
         $output = ob_get_clean();
         
-        $this->assertStringContainsString('Erreur', $output);
+        $this->assertStringContainsString('Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères', $output);
     }
 
     public function testFormatCodePostalInvalide()
