@@ -1,9 +1,31 @@
 <?php
 include __DIR__ . "/connexionBDD.php";
 
-// Debugging: Affiche le contenu de $_POST pour vérifier les données reçues
+// Débogage : Affiche le contenu de $_POST pour vérifier les données reçues
 if (defined('PHPUNIT_TEST')) {
     file_put_contents('php://stderr', print_r($_POST, true));
+}
+
+// Fonction pour gérer la réponse (redirection ou message selon l'environnement)
+if (!function_exists('sendResponse')) {
+    function sendResponse($location = null, $message = null) {
+        if (defined('PHPUNIT_TEST')) {
+            if ($message) {
+                echo $message;
+            } else {
+                echo "SUCCES"; // Indique une opération réussie en environnement de test
+            }
+        } else {
+            if ($location) {
+                header("Location: " . $location);
+                exit();
+            }
+            if ($message) {
+                echo $message;
+                exit();
+            }
+        }
+    }
 }
 
 // Validation des données d'entrée
@@ -15,8 +37,8 @@ foreach ($requiredFields as $field) {
             file_put_contents('php://stderr', "Validation échouée pour le champ : $field\n");
             throw new Exception("Erreur : Tous les champs obligatoires doivent être remplis.");
         }
-        echo "Erreur : Tous les champs obligatoires doivent être remplis.";
-        exit(); // Arrête l'exécution si un champ est vide
+        sendResponse(null, "Erreur : Tous les champs obligatoires doivent être remplis.");
+        return;
     }
 }
 
@@ -25,28 +47,28 @@ $numero_licence = $_POST['numero_licence'];
 
 // Validation du format du numéro de licence (format plus flexible)
 if (!preg_match('/^[A-Za-z0-9]{6,12}$/', $numero_licence)) {
-    echo "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères (lettres ou chiffres).";
-    exit();
+    sendResponse(null, "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères (lettres ou chiffres).");
+    return;
 }
 
 // Validation du code postal (5 chiffres)
 if (!preg_match('/^\d{5}$/', $_POST['CP'])) {
-    echo "Erreur : Le code postal doit contenir exactement 5 chiffres.";
-    exit();
+    sendResponse(null, "Erreur : Le code postal doit contenir exactement 5 chiffres.");
+    return;
 }
 
 // Validation du numéro de téléphone (format français)
 if (!preg_match('/^0[1-9][0-9]{8}$/', $_POST['numTel'])) {
-    echo "Erreur : Le numéro de téléphone doit être au format français valide.";
-    exit();
+    sendResponse(null, "Erreur : Le numéro de téléphone doit être au format français valide.");
+    return;
 }
 
 try {
     $requete = $bdd->prepare("SELECT COUNT(*) FROM utilisateur WHERE numero_licence = :numero_licence");
     $requete->execute(['numero_licence' => $numero_licence]);
     if ($requete->fetchColumn() > 0) {
-        echo "Erreur : Un utilisateur avec ce numéro de licence existe déjà.";
-        exit();
+        sendResponse(null, "Erreur : Un utilisateur avec ce numéro de licence existe déjà.");
+        return;
     }
 
     // Insertion des données
@@ -74,16 +96,11 @@ try {
         'CP' => $CP,
         'ville' => $ville
     ])) {
-        // Redirection après insertion réussie
-        header("Location: confirmation_creation_de_compte.html");
-        exit(); // Termine le script après la redirection
+        sendResponse("confirmation_creation_de_compte.html");
     } else {
-        // Affiche une erreur si l'insertion échoue
-        echo "Erreur : Une erreur est survenue lors de l'insertion.";
-        exit();
+        sendResponse(null, "Erreur : Une erreur est survenue lors de l'insertion.");
     }
 } catch (PDOException $e) {
-    echo "Erreur : " . $e->getMessage();
-    exit();
+    sendResponse(null, "Erreur : " . $e->getMessage());
 }
 ?>

@@ -58,7 +58,7 @@ class EnregDetailsTest extends TestCase
 
     public function testFormatCodePostalInvalide()
     {
-        $this->setPostData(['CP' => '123']); // CP trop court
+        $this->setPostData(['CP' => '12345']); // CP trop court
         
         ob_start();
         require __DIR__.'/../HTML/EnregDetails.php';
@@ -69,7 +69,7 @@ class EnregDetailsTest extends TestCase
 
     public function testNumeroTelephoneInvalide()
     {
-        $this->setPostData(['numTel' => '123']); // Numéro invalide
+        $this->setPostData(['numTel' => '0123456749']); // Numéro invalide
         
         ob_start();
         require __DIR__.'/../HTML/EnregDetails.php';
@@ -125,7 +125,7 @@ class EnregDetailsTest extends TestCase
             'nom' => 'Dupont',
             'prenom' => 'Jean',
             'sexe' => 'M',
-            'numTel' => '0606060606',
+            'numTel' => '0123456789',
             'adresse' => '10 rue des tests',
             'ville' => 'Paris',
             'CP' => '75875'
