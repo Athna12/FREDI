@@ -1,8 +1,11 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
-class EnregDetailsTest extends TestCase
+class EnregDetailsTest extends TestCase 
 {
+    private $mockPDO;
+    private $mockStatement;
+
     protected function setUp(): void
     {
         if (!defined('PHPUNIT_TEST')) {
@@ -11,50 +14,99 @@ class EnregDetailsTest extends TestCase
         
         $_SESSION = [];
 
-        // Create a proper PDOStatement mock with all needed methods
-        $mockStatement = $this->getMockBuilder(PDOStatement::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['execute', 'fetchColumn', 'errorInfo'])
-            ->getMockForAbstractClass();
-
-        $mockStatement->expects($this->any())
-            ->method('execute')
-            ->willReturn(true);
-
-        $mockStatement->expects($this->any())
-            ->method('fetchColumn')
-            ->willReturn(0);
-
-        $mockStatement->expects($this->any())
-            ->method('errorInfo')
-            ->willReturn([0, null, null]);
-
-        // Configure PDO mock with all needed methods
-        $mockPDO = $this->getMockBuilder(PDO::class)
+        // Create PDOStatement mock with common behaviors
+        $this->mockStatement = $this->createMock(PDOStatement::class);
+        $this->mockStatement->method('execute')->willReturn(true);
+        $this->mockStatement->method('fetchColumn')->willReturn(0);
+        $this->mockStatement->method('errorInfo')->willReturn([0, null, null]);
+        
+        // Create PDO mock with necessary methods
+        $this->mockPDO = $this->getMockBuilder(PDO::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['prepare', 'exec', 'errorInfo'])
             ->getMock();
+            
+        $this->mockPDO->method('prepare')->willReturn($this->mockStatement);
+        $this->mockPDO->method('exec')->willReturn(true);
+        $this->mockPDO->method('errorInfo')->willReturn([0, null, null]);
 
-        $mockPDO->expects($this->any())
-            ->method('prepare')
-            ->willReturn($mockStatement);
-
-        $mockPDO->expects($this->any())
-            ->method('exec')
-            ->willReturn(true);
-
-        $mockPDO->expects($this->any())
-            ->method('errorInfo')
-            ->willReturn([0, null, null]);
-
-        $GLOBALS['bdd'] = $mockPDO;
+        $GLOBALS['bdd'] = $this->mockPDO;
     }
+
+    // Existing tests...
+
+    public function testFormatNumeroLicenceInvalide()
+    {
+        $this->setPostData(['numero_licence' => 'ABC123']); // Format invalide
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur', $output);
+    }
+
+    public function testFormatCodePostalInvalide()
+    {
+        $this->setPostData(['CP' => '123']); // CP trop court
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur', $output);
+    }
+
+    public function testNumeroTelephoneInvalide()
+    {
+        $this->setPostData(['numTel' => '123']); // Numéro invalide
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur', $output);
+    }
+
+    public function testErreurPDOPrepare()
+    {
+        $this->setPostData();
+        
+        // Simulate PDO prepare error
+        $this->mockPDO->method('prepare')
+            ->will($this->throwException(new PDOException('Erreur de préparation')));
+            
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur', $output);
+    }
+
+    public function testDoubleInsertionMemeNumeroLicence()
+    {
+        $this->setPostData();
+        
+        // First insertion succeeds
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        ob_clean();
+        
+        // Second insertion with same license number fails
+        $this->mockStatement->method('fetchColumn')->willReturn(1);
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('existe déjà', $output);
+    }
+
+    // Removed duplicate method to resolve the syntax error.
 
     /**
      * Initialise $_POST avec des données par défaut, avec possibilité de les surcharger.
      * @param array $overrides Données à surcharger dans $_POST.
      */
-    private function setPostData(array $overrides = []): void
+    function setPostData(array $overrides = []): void
     {
         // Données par défaut pour les tests
         $_POST = array_merge([
@@ -70,19 +122,6 @@ class EnregDetailsTest extends TestCase
         ], $overrides);
     }
 
-    public function testInsertUtilisateur()
-    {
-        // Initialise $_POST avec des données valides
-        $this->setPostData();
-
-        // Teste si l'insertion d'un utilisateur ne produit pas de sortie
-        ob_start();
-        require __DIR__.'/../HTML/EnregDetails.php';
-        $output = ob_get_clean();
-        
-        // Vérifie que la sortie est vide
-        $this->assertEmpty($output);
-    }
 
     public function testValidationDesDonnees()
     {
