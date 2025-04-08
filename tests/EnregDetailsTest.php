@@ -38,10 +38,10 @@ class EnregDetailsTest extends TestCase
     public function testFormatNumeroLicenceInvalide()
     {
         $this->setPostData([
-            'numero_licence' => 'AB1265', // Trop court (moins de 6 caractères)
+            'numero_licence' => 'AB12657', // Trop court (moins de 6 caractères)
             'ligueSportive' => 'Football',
             'nom' => 'Dupont',
-            'prenom' => 'Jean',
+            'prenom' => 'Math',
             'sexe' => 'M',
             'numTel' => '0606060606',
             'adresse' => '10 rue des tests',
@@ -64,7 +64,7 @@ class EnregDetailsTest extends TestCase
         require __DIR__.'/../HTML/EnregDetails.php';
         $output = ob_get_clean();
         
-        $this->assertStringContainsString('Erreur', $output);
+        $this->assertStringContainsString('Erreur : Le code postal doit contenir exactement 5 chiffres', $output);
     }
 
     public function testNumeroTelephoneInvalide()
@@ -120,7 +120,7 @@ class EnregDetailsTest extends TestCase
     {
         // Données par défaut pour les tests
         $_POST = array_merge([
-            'numero_licence' => '12345',
+            'numero_licence' => '1234567',
             'ligueSportive' => 'Football',
             'nom' => 'Dupont',
             'prenom' => 'Jean',
@@ -128,7 +128,7 @@ class EnregDetailsTest extends TestCase
             'numTel' => '0606060606',
             'adresse' => '10 rue des tests',
             'ville' => 'Paris',
-            'CP' => '75000'
+            'CP' => '75875'
         ], $overrides);
     }
 
