@@ -6,14 +6,22 @@ if (defined('PHPUNIT_TEST')) {
     file_put_contents('php://stderr', print_r($_POST, true));
 }
 
-// Fonction pour gérer la réponse (redirection ou message selon l'environnement)
+// Modification de la fonction sendResponse pour gérer correctement les tests
 if (!function_exists('sendResponse')) {
     function sendResponse($location = null, $message = null) {
         if (defined('PHPUNIT_TEST')) {
             if ($message) {
                 echo $message;
-            } else {
-                echo "SUCCES"; // Indique une opération réussie en environnement de test
+                return false;
+            }
+            if ($location) {
+                // Ne renvoie pas de redirection en cas d'erreur pendant les tests
+                if (isset($GLOBALS['hasError']) && $GLOBALS['hasError']) {
+                    echo $GLOBALS['errorMessage'];
+                    return false;
+                }
+                echo "REDIRECT:" . $location;
+                return true;
             }
         } else {
             if ($location) {
@@ -31,43 +39,63 @@ if (!function_exists('sendResponse')) {
 // Validation des données d'entrée
 // Vérifie que tous les champs obligatoires sont remplis
 $requiredFields = ['numero_licence', 'ligueSportive', 'nom', 'prenom', 'sexe', 'numTel', 'adresse', 'ville', 'CP'];
+
+// Initialise les variables avant utilisation pour accéder directement à $_POST
+$numero_licence = isset($_POST['numero_licence']) ? $_POST['numero_licence'] : '';
+$ligueSportive = isset($_POST['ligueSportive']) ? $_POST['ligueSportive'] : '';
+$nom = isset($_POST['nom']) ? $_POST['nom'] : '';
+$prenom = isset($_POST['prenom']) ? $_POST['prenom'] : '';
+$sexe = isset($_POST['sexe']) ? $_POST['sexe'] : '';
+$numTel = isset($_POST['numTel']) ? $_POST['numTel'] : '';
+$adresse = isset($_POST['adresse']) ? $_POST['adresse'] : '';
+$ville = isset($_POST['ville']) ? $_POST['ville'] : '';
+$CP = isset($_POST['CP']) ? $_POST['CP'] : '';
+
+// Vérifie les champs obligatoires
 foreach ($requiredFields as $field) {
     if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
+        $GLOBALS['hasError'] = true;
+        $GLOBALS['errorMessage'] = "Erreur : Tous les champs obligatoires doivent être remplis.";
         if (defined('PHPUNIT_TEST')) {
-            file_put_contents('php://stderr', "Validation échouée pour le champ : $field\n");
-            throw new Exception("Erreur : Tous les champs obligatoires doivent être remplis.");
+            throw new Exception($GLOBALS['errorMessage']);
         }
-        sendResponse(null, "Erreur : Tous les champs obligatoires doivent être remplis.");
+        sendResponse(null, $GLOBALS['errorMessage']);
         return;
     }
 }
 
-// Vérifie si un utilisateur avec le même numéro de licence existe déjà
-$numero_licence = $_POST['numero_licence'];
-
-// Validation du format du numéro de licence (format plus flexible)
-if (!preg_match('/^[A-Za-z0-9]{6,12}$/', $numero_licence)) {
-    sendResponse(null, "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères (lettres ou chiffres).");
+// Validation du format du numéro de licence
+if (!preg_match('/^[A-Za-z0-9]{6,12}$/', $_POST['numero_licence'])) {
+    $GLOBALS['hasError'] = true;
+    $GLOBALS['errorMessage'] = "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères";
+    sendResponse(null, $GLOBALS['errorMessage']);
     return;
 }
 
-// Validation du code postal (5 chiffres)
+// Validation du code postal
 if (!preg_match('/^\d{5}$/', $_POST['CP'])) {
-    sendResponse(null, "Erreur : Le code postal doit contenir exactement 5 chiffres.");
+    $GLOBALS['hasError'] = true;
+    $GLOBALS['errorMessage'] = "Erreur : Le code postal doit contenir exactement 5 chiffres";
+    sendResponse(null, $GLOBALS['errorMessage']);
     return;
 }
 
-// Validation du numéro de téléphone (format français)
+// Validation du numéro de téléphone
 if (!preg_match('/^0[1-9][0-9]{8}$/', $_POST['numTel'])) {
-    sendResponse(null, "Erreur : Le numéro de téléphone doit être au format français valide.");
+    $GLOBALS['hasError'] = true;
+    $GLOBALS['errorMessage'] = "Erreur : Le numéro de téléphone doit être au format français valide";
+    sendResponse(null, $GLOBALS['errorMessage']);
     return;
 }
 
 try {
     $requete = $bdd->prepare("SELECT COUNT(*) FROM utilisateur WHERE numero_licence = :numero_licence");
     $requete->execute(['numero_licence' => $numero_licence]);
+    // Vérification de l'existence du numéro de licence
     if ($requete->fetchColumn() > 0) {
-        sendResponse(null, "Erreur : Un utilisateur avec ce numéro de licence existe déjà.");
+        $GLOBALS['hasError'] = true;
+        $GLOBALS['errorMessage'] = "Erreur : Un utilisateur avec ce numéro de licence existe déjà";
+        sendResponse(null, $GLOBALS['errorMessage']);
         return;
     }
 
@@ -101,6 +129,8 @@ try {
         sendResponse(null, "Erreur : Une erreur est survenue lors de l'insertion.");
     }
 } catch (PDOException $e) {
-    sendResponse(null, "Erreur : " . $e->getMessage());
+    $GLOBALS['hasError'] = true;
+    $GLOBALS['errorMessage'] = "Erreur : " . $e->getMessage();
+    sendResponse(null, $GLOBALS['errorMessage']);
 }
 ?>
