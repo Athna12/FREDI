@@ -33,92 +33,11 @@ class EnregDetailsTest extends TestCase
         $GLOBALS['bdd'] = $this->mockPDO;
     }
 
-    // Existing tests...
-
-    public function testFormatNumeroLicenceInvalide()
-    {
-        $this->setPostData([
-            'numero_licence' => 'AB1265', // Trop court (moins de 6 caractères)
-            'ligueSportive' => 'Football',
-            'nom' => 'Dupont',
-            'prenom' => 'Math',
-            'sexe' => 'M',
-            'numTel' => '0606060606',
-            'adresse' => '10 rue des tests',
-            'ville' => 'Paris',
-            'CP' => '75000'
-        ]);
-        
-        ob_start();
-        require __DIR__.'/../HTML/EnregDetails.php';
-        $output = ob_get_clean();
-        
-        $this->assertStringContainsString('Erreur : Le numéro de licence', $output);
-    }
-
-    public function testFormatCodePostalInvalide()
-    {
-        $this->setPostData(['CP' => '12345']); // CP trop court
-        
-        ob_start();
-        require __DIR__.'/../HTML/EnregDetails.php';
-        $output = ob_get_clean();
-        
-        $this->assertStringContainsString('Erreur : Le code postal doit contenir exactement 5 chiffres', $output);
-    }
-
-    public function testNumeroTelephoneInvalide()
-    {
-        $this->setPostData(['numTel' => '0123456749']); // Numéro invalide
-        
-        ob_start();
-        require __DIR__.'/../HTML/EnregDetails.php';
-        $output = ob_get_clean();
-        
-        $this->assertStringContainsString('Erreur', $output);
-    }
-
-    public function testErreurPDOPrepare()
-    {
-        $this->setPostData();
-        
-        // Simulate PDO prepare error
-        $this->mockPDO->method('prepare')
-            ->will($this->throwException(new PDOException('Erreur de préparation')));
-            
-        ob_start();
-        require __DIR__.'/../HTML/EnregDetails.php';
-        $output = ob_get_clean();
-        
-        $this->assertStringContainsString('Erreur', $output);
-    }
-
-    public function testDoubleInsertionMemeNumeroLicence()
-    {
-        $this->setPostData();
-        
-        // First insertion succeeds
-        ob_start();
-        require __DIR__.'/../HTML/EnregDetails.php';
-        ob_clean();
-        
-        // Second insertion with same license number fails
-        $this->mockStatement->method('fetchColumn')->willReturn(1);
-        require __DIR__.'/../HTML/EnregDetails.php';
-        $output = ob_get_clean();
-        
-        $this->assertStringContainsString('existe déjà', $output);
-    }
-
-    // Removed duplicate method to resolve the syntax error.
-
     /**
      * Initialise $_POST avec des données par défaut, avec possibilité de les surcharger.
-     * @param array $overrides Données à surcharger dans $_POST.
      */
-    function setPostData(array $overrides = []): void
+    private function setPostData(array $overrides = []): void
     {
-        // Données par défaut pour les tests
         $_POST = array_merge([
             'numero_licence' => '1234567',
             'ligueSportive' => 'Football',
@@ -132,6 +51,74 @@ class EnregDetailsTest extends TestCase
         ], $overrides);
     }
 
+    public function testFormatNumeroLicenceInvalide()
+    {
+        $this->setPostData([
+            'numero_licence' => 'AB1', // Trop court (moins de 6 caractères)
+        ]);
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur : Le numéro de licence', $output);
+    }
+
+    public function testFormatCodePostalInvalide() 
+    {
+        $this->setPostData([
+            'CP' => '123' // Code postal invalide (3 chiffres)
+        ]);
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur : Le code postal', $output);
+    }
+
+    public function testNumeroTelephoneInvalide()
+    {
+        $this->setPostData([
+            'numTel' => '1234567890' // Format invalide (ne commence pas par 0)
+        ]);
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php'; 
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur : Le numéro de téléphone', $output);
+    }
+
+    public function testErreurPDOPrepare()
+    {
+        $this->setPostData();
+        
+        // Configure mock to throw exception
+        $this->mockPDO->method('prepare')
+            ->willThrowException(new PDOException('Erreur de préparation'));
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('Erreur', $output);
+    }
+
+    public function testDoubleInsertionMemeNumeroLicence()
+    {
+        $this->setPostData();
+        
+        // Configure mock to return 1 (indicating license exists)
+        $this->mockStatement->method('fetchColumn')
+            ->willReturn(1);
+        
+        ob_start();
+        require __DIR__.'/../HTML/EnregDetails.php';
+        $output = ob_get_clean();
+        
+        $this->assertStringContainsString('existe déjà', $output);
+    }
 
     public function testValidationDesDonnees()
     {
@@ -157,22 +144,15 @@ class EnregDetailsTest extends TestCase
 
     public function testReglesMetier()
     {
-        // Initialise $_POST avec des données valides
         $this->setPostData();
-
-        // Mock de la base de données pour simuler une insertion échouée
-        $mockBdd = $this->createMock(PDO::class);
-        $mockBdd->method('exec')->willReturn(false);
-
-        // Injecte le mock dans le script
-        $GLOBALS['bdd'] = $mockBdd;
-
-        // Capture la sortie du script
+        
+        // Simuler une insertion échouée
+        $this->mockPDO->method('exec')->willReturn(false);
+        
         ob_start();
         require __DIR__.'/../HTML/EnregDetails.php';
         $output = ob_get_clean();
-
-        // Vérifie qu'un message d'erreur est affiché
-        $this->assertStringContainsString('Erreur', $output, "Une erreur aurait dû être affichée pour un numéro de licence déjà utilisé.");
+        
+        $this->assertStringContainsString('Erreur', $output);
     }
 }

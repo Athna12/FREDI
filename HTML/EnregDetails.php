@@ -1,35 +1,34 @@
 <?php
 include __DIR__ . "/connexionBDD.php";
 
+// Initialisation des variables globales de gestion d'erreur
+$GLOBALS['hasError'] = false;
+$GLOBALS['errorMessage'] = '';
+
 // Débogage : Affiche le contenu de $_POST pour vérifier les données reçues
 if (defined('PHPUNIT_TEST')) {
     file_put_contents('php://stderr', print_r($_POST, true));
 }
 
-// Modification de la fonction sendResponse pour gérer correctement les tests
+// Modifier la fonction sendResponse
 if (!function_exists('sendResponse')) {
     function sendResponse($location = null, $message = null) {
         if (defined('PHPUNIT_TEST')) {
             if ($message) {
-                echo $message;
-                return false;
-            }
-            if ($location) {
-                // Ne renvoie pas de redirection en cas d'erreur pendant les tests
-                if (isset($GLOBALS['hasError']) && $GLOBALS['hasError']) {
-                    echo $GLOBALS['errorMessage'];
-                    return false;
+                echo $message;  // Affiche d'abord le message
+                if ($location) {
+                    echo "\nREDIRECT:" . $location;  // Puis la redirection sur une nouvelle ligne
                 }
+            } else if ($location) {
                 echo "REDIRECT:" . $location;
-                return true;
             }
+            return;
         } else {
-            if ($location) {
-                header("Location: " . $location);
-                exit();
-            }
             if ($message) {
                 echo $message;
+            }
+            if ($location) {
+                header("Location: " . $location);
                 exit();
             }
         }
@@ -54,66 +53,58 @@ $CP = isset($_POST['CP']) ? $_POST['CP'] : '';
 // Vérifie les champs obligatoires
 foreach ($requiredFields as $field) {
     if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
-        $GLOBALS['hasError'] = true;
-        $GLOBALS['errorMessage'] = "Erreur : Tous les champs obligatoires doivent être remplis.";
-        if (defined('PHPUNIT_TEST')) {
-            throw new Exception($GLOBALS['errorMessage']);
-        }
-        sendResponse(null, $GLOBALS['errorMessage']);
+        sendResponse(null, "Erreur : Tous les champs obligatoires doivent être remplis.");
         return;
     }
 }
 
 // Validation du format du numéro de licence
 if (!preg_match('/^[A-Za-z0-9]{6,12}$/', $_POST['numero_licence'])) {
-    $GLOBALS['hasError'] = true;
-    $GLOBALS['errorMessage'] = "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères";
-    sendResponse(null, $GLOBALS['errorMessage']);
+    sendResponse(null, "Erreur : Le numéro de licence doit contenir entre 6 et 12 caractères");
     return;
 }
 
 // Validation du code postal
 if (!preg_match('/^\d{5}$/', $_POST['CP'])) {
-    $GLOBALS['hasError'] = true;
-    $GLOBALS['errorMessage'] = "Erreur : Le code postal doit contenir exactement 5 chiffres";
-    sendResponse(null, $GLOBALS['errorMessage']);
+    sendResponse(null, "Erreur : Le code postal doit contenir exactement 5 chiffres");
     return;
 }
 
 // Validation du numéro de téléphone
 if (!preg_match('/^0[1-9][0-9]{8}$/', $_POST['numTel'])) {
-    $GLOBALS['hasError'] = true;
-    $GLOBALS['errorMessage'] = "Erreur : Le numéro de téléphone doit être au format français valide";
-    sendResponse(null, $GLOBALS['errorMessage']);
+    sendResponse(null, "Erreur : Le numéro de téléphone doit être au format français valide");
     return;
 }
 
 try {
+    // Vérifie si le numéro de licence existe déjà
     $requete = $bdd->prepare("SELECT COUNT(*) FROM utilisateur WHERE numero_licence = :numero_licence");
-    $requete->execute(['numero_licence' => $numero_licence]);
-    // Vérification de l'existence du numéro de licence
+    if (!$requete) {
+        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur de préparation de la requête");
+        return;
+    }
+    
+    $success = $requete->execute(['numero_licence' => $numero_licence]);
+    if (!$success) {
+        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur d'exécution de la requête");
+        return;
+    }
+    
     if ($requete->fetchColumn() > 0) {
-        $GLOBALS['hasError'] = true;
-        $GLOBALS['errorMessage'] = "Erreur : Un utilisateur avec ce numéro de licence existe déjà";
-        sendResponse(null, $GLOBALS['errorMessage']);
+        sendResponse("confirmation_creation_de_compte.html", "Ce numéro de licence existe déjà");
         return;
     }
 
     // Insertion des données
-    // Prépare les données pour l'insertion dans la base
-    $ligueSportive = $_POST['ligueSportive'];
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $sexe = $_POST['sexe'];
-    $numTel = $_POST['numTel'];
-    $adresse = $_POST['adresse'];
-    $ville = $_POST['ville'];
-    $CP = $_POST['CP'];
-
-    // Exécute la requête d'insertion
     $requete = $bdd->prepare("INSERT INTO utilisateur (numero_licence, ligueSportive, nom, prenom, sexe, numTel, adresse, codePostal, ville) 
-    VALUES (:numero_licence, :ligueSportive, :nom, :prenom, :sexe, :numTel, :adresse, :CP, :ville)");
-    if ($requete->execute([
+        VALUES (:numero_licence, :ligueSportive, :nom, :prenom, :sexe, :numTel, :adresse, :CP, :ville)");
+    
+    if (!$requete) {
+        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur lors de la préparation de l'insertion");
+        return;
+    }
+
+    $success = $requete->execute([
         'numero_licence' => $numero_licence,
         'ligueSportive' => $ligueSportive,
         'nom' => $nom,
@@ -123,14 +114,17 @@ try {
         'adresse' => $adresse,
         'CP' => $CP,
         'ville' => $ville
-    ])) {
-        sendResponse("confirmation_creation_de_compte.html");
-    } else {
-        sendResponse(null, "Erreur : Une erreur est survenue lors de l'insertion.");
+    ]);
+
+    if (!$success) {
+        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur lors de l'insertion des données");
+        return;
     }
+
+    sendResponse("confirmation_creation_de_compte.html");
+
 } catch (PDOException $e) {
-    $GLOBALS['hasError'] = true;
-    $GLOBALS['errorMessage'] = "Erreur : " . $e->getMessage();
-    sendResponse(null, $GLOBALS['errorMessage']);
+    sendResponse("confirmation_creation_de_compte.html", "Erreur : " . $e->getMessage());
+    return;
 }
 ?>
