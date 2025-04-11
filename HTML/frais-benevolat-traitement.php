@@ -1,4 +1,5 @@
 <?php
+include("connexionBDD.php");
 // Traitement.php - Traitement du formulaire de note de frais
       // Traitement des adhérents
     $adherents = [];
