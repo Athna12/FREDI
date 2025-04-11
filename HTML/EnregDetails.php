@@ -15,23 +15,27 @@ if (!function_exists('sendResponse')) {
     function sendResponse($location = null, $message = null) {
         if (defined('PHPUNIT_TEST')) {
             if ($message) {
-                echo $message;  // Affiche d'abord le message
+                echo $message;
                 if ($location) {
-                    echo "\nREDIRECT:" . $location;  // Puis la redirection sur une nouvelle ligne
+                    echo "\nREDIRECT:" . $location;
                 }
-            } else if ($location) {
-                echo "REDIRECT:" . $location;
+                return false; // Retourne false en cas d'erreur
             }
-            return;
+            if ($location) {
+                echo "REDIRECT:" . $location;
+                return true; // Retourne true en cas de succès
+            }
         } else {
             if ($message) {
                 echo $message;
+                return false;
             }
             if ($location) {
                 header("Location: " . $location);
                 exit();
             }
         }
+        return true;
     }
 }
 
@@ -79,20 +83,19 @@ if (!preg_match('/^0[1-9][0-9]{8}$/', $_POST['numTel'])) {
 try {
     // Vérifie si le numéro de licence existe déjà
     $requete = $bdd->prepare("SELECT COUNT(*) FROM utilisateur WHERE numero_licence = :numero_licence");
-    if (!$requete) {
-        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur de préparation de la requête");
-        return;
+    if ($requete === false) {
+        throw new PDOException("Erreur de préparation de la requête");
     }
     
     $success = $requete->execute(['numero_licence' => $numero_licence]);
-    if (!$success) {
-        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur d'exécution de la requête");
-        return;
+    if ($success === false) {
+        throw new PDOException("Erreur d'exécution de la requête");
     }
     
     if ($requete->fetchColumn() > 0) {
-        sendResponse("confirmation_creation_de_compte.html", "Ce numéro de licence existe déjà");
-        return;
+        if (!sendResponse(null, "Ce numéro de licence existe déjà")) {
+            return;
+        }
     }
 
     // Insertion des données
@@ -100,7 +103,7 @@ try {
         VALUES (:numero_licence, :ligueSportive, :nom, :prenom, :sexe, :numTel, :adresse, :CP, :ville)");
     
     if (!$requete) {
-        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur lors de la préparation de l'insertion");
+        sendResponse(null, "Erreur : Erreur lors de la préparation de l'insertion");
         return;
     }
 
@@ -116,15 +119,17 @@ try {
         'ville' => $ville
     ]);
 
-    if (!$success) {
-        sendResponse("confirmation_creation_de_compte.html", "Erreur : Erreur lors de l'insertion des données");
+    if ($success === false) {
+        throw new PDOException("Erreur lors de l'insertion des données");
+    }
+
+    // Vérification explicite du succès avant la redirection
+    if (!sendResponse("confirmation_creation_de_compte.html")) {
         return;
     }
 
-    sendResponse("confirmation_creation_de_compte.html");
-
 } catch (PDOException $e) {
-    sendResponse("confirmation_creation_de_compte.html", "Erreur : " . $e->getMessage());
+    sendResponse(null, "Erreur : " . $e->getMessage());
     return;
 }
 ?>
