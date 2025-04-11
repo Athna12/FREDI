@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Note de Frais Bénévoles</title>
+    <link rel="stylesheet" href="frais-benevolat-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Note de frais des bénévoles</h1>
+            <p class="subheading">Salle d'Armes de Villers lès Nancy, 1 rue Rodin - 54600 Villers lès Nancy</p>
+        </header>
+
+        <form action="frais-benevolat-traitement.php" method="post" id="fraisForm">
+            <div class="personal-info">
+                <div class="form-group">
+                    <label for="nom_prenom">Je soussigné(e)</label>
+                    <input type="text" id="nom_prenom" name="nom_prenom" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adresse">demeurant</label>
+                    <input type="text" id="adresse" name="adresse" required>
+                </div>
+                
+                <p class="declaration">certifie renoncer au remboursement des frais ci-dessous et les laisser à l'association en tant que don.</p>
+            </div>
+
+            <div class="representant-info">
+                <p>Je suis le représentant légal des adhérents suivants :</p>
+                <div class="adherents-container">
+                    <div class="adherent-input">
+                        <input type="text" name="adherent[]" placeholder="Nom, prénom, licence n°">
+                        <button type="button" class="add-adherent-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarif-info">
+                <p><strong>Frais de déplacement</strong> Tarif kilométrique appliqué pour le remboursement : <input type="number" name="tarif_km" id="tarif_km" value="0.28" step="0.01" min="0"> €</p>
+            </div>
+
+            <div class="table-container">
+                <table id="fraisTable">
+                    <thead>
+                        <tr>
+                            <th>Date<br>jj/mm/aaaa</th>
+                            <th>Motif</th>
+                            <th>Trajet</th>
+                            <th>Kms<br>parcourus</th>
+                            <th>Coût Trajet</th>
+                            <th>Péages</th>
+                            <th>Repas</th>
+                            <th>Hébergement</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="frais-row">
+                            <td><input type="date" name="date[]" required></td>
+                            <td><input type="text" name="motif[]" required></td>
+                            <td><input type="text" name="trajet[]" required></td>
+                            <td><input type="number" name="km[]" class="km" required min="0"></td>
+                            <td><input type="number" name="cout_trajet[]" class="cout-trajet" readonly step="0.01"></td>
+                            <td><input type="number" name="peages[]" class="peages" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="repas[]" class="repas" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="hebergement[]" class="hebergement" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="total[]" class="total-ligne" readonly step="0.01"></td>
+                            <td><button type="button" class="delete-row">Supprimer</button></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8" class="total-label">Montant total des frais de déplacement</td>
+                            <td><input type="number" id="total_general" name="total_general" readonly step="0.01"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="8" class="total-label">Montant total des dons</td>
+                            <td><input type="number" id="total_dons" name="total_dons" readonly step="0.01"></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <button type="button" id="addRow">Ajouter une ligne</button>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-block">
+                    <label for="ville">A</label>
+                    <input type="text" id="ville" name="ville" required>
+                    <label for="date_signature">Le</label>
+                    <input type="date" id="date_signature" name="date_signature" required>
+                </div>
+                <div class="signature-note">
+                    <p>Signature du bénévole</p>
+                </div>
+            </div>
+
+            <div class="administration-section">
+                <h3>Partie réservée à l'association</h3>
+                <div class="admin-fields">
+                    <div class="form-group">
+                        <label for="num_recu">N° d'ordre du Reçu :</label>
+                        <input type="text" id="num_recu" name="num_recu">
+                    </div>
+                    <div class="form-group">
+                        <label for="date_remise">Remis le :</label>
+                        <input type="date" id="date_remise" name="date_remise">
+                    </div>
+                    <div class="signature-tresorier">
+                        <p>Signature du Trésorier :</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="justificatifs-note">
+                <p>Pour bénéficier du reçu de dons, cette note de frais doit être accompagnée de tous les justificatifs correspondants</p>
+            </div>
+
+            <div class="annee-civile">
+                <label for="annee">Année civile</label>
+                <input type="number" id="annee" name="annee" min="2000" max="2099" step="1" value="2025">
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit">Soumettre</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="frais-benevolat-script.js"></script>
+</body>
+</html>
