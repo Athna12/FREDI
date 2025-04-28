@@ -2,16 +2,27 @@
 include("connexionBDD.php");
 // Traitement.php - Traitement du formulaire de note de frais
     // Traitement des lignes de frais
-   $requete = "INSERT INTO lignes_frais 
-   (datee, motif, km, trajet,cout_trajet, cout_peage,
-       cout_repas, cout_hebergement, km_valide, hebergement, total)
+    $date = $_POST['datee'];
+    $lemotif = $_POST['motif'];
+    $km = $_Post['km'];
+    $letrajet = $_POST['trajet'];
+    $coutPeage = $_POST['cout_peage'];
+    $coutRepas = $_POST['cout_repas'];
+    $coutHebergement = $_POST['cout_hebergement'];
+
+
+
+
+    $requete = "INSERT INTO lignes_frais 
+    (datee, motif, km, trajet, cout_peage,
+    cout_repas, cout_hebergement, total)
     VALUES 
-    (:date_deplacement, :motif, :trajet, :km, :cout_trajet,
-        :peages, :repas, :hebergement, :total)";
+    ('$date', '$lemotif', '$km', '$letrajet', '$coutPeage',
+    '$coutRepas', '$coutHebergement')";
     $bdd->exec($requete);
     
     // Rediriger vers la page de confirmation
-    header("Location: frais-benevolat-formulaire.html");
+    header("Location: FrediAcceuil.html");
     exit();
 
 ?>
