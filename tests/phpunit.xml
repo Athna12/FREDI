@@ -2,34 +2,34 @@
 <phpunit bootstrap="../vendor/autoload.php">
     <testsuites>
         <testsuite name="UnitTests">
-            <!-- Spécifie le répertoire contenant les tests -->
-            <directory>tests</directory>
+            <!-- Change tests directory to match actual location -->
+            <directory>.</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
-            <!-- Inclut les fichiers PHP du dossier PHP pour la couverture -->
-            <directory suffix=".php">PHP</directory>
+            <!-- Update path to match actual source files -->
+            <directory suffix=".php">../HTML</directory>
         </include>
         <report>
-            <!-- Affiche un rapport texte dans la console -->
+            <!-- Change paths to be relative to phpunit.xml location -->
             <text outputFile="php://stdout"/>
             <!-- Génère un rapport HTML dans le dossier coverage-report -->
-            <html outputDirectory="coverage-report"/>
+            <html outputDirectory="../coverage-report"/>
             <!-- Ajoute un rapport Clover XML -->
-            <clover outputFile="coverage-reports/clover.xml"/>
+            <clover outputFile="../coverage-reports/clover.xml"/>
             <!-- Ajoute un rapport JUnit XML -->
-            <xml outputDirectory="coverage-reports/coverage-xml"/>
+            <xml outputDirectory="../coverage-reports/coverage-xml"/>
             <!-- Ajoute un rapport Cobertura -->
-            <cobertura outputFile="coverage-reports/cobertura.xml"/>
+            <cobertura outputFile="../coverage-reports/cobertura.xml"/>
         </report>
     </coverage>
     <logging>
-        <!-- Génère un rapport de tests en XML format JUnit -->
-        <junit outputFile="test-reports/junit.xml"/>
+        <!-- Update paths to be relative to phpunit.xml location -->
+        <junit outputFile="../test-reports/junit.xml"/>
         <!-- Génère un rapport de tests en format texte -->
-        <testdoxText outputFile="test-reports/testdox.txt"/>
+        <testdoxText outputFile="../test-reports/testdox.txt"/>
         <!-- Génère un rapport de tests en HTML -->
-        <testdoxHtml outputFile="test-reports/testdox.html"/>
+        <testdoxHtml outputFile="../test-reports/testdox.html"/>
     </logging>
 </phpunit>
