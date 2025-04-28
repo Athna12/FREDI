@@ -17,8 +17,8 @@ include("connexionBDD.php");
     (datee, motif, km, trajet, cout_peage,
     cout_repas, cout_hebergement)
     VALUES 
-    ('$date', '$lemotif', '$lekm', '$letrajet', '$coutPeage',
-    '$coutRepas', '$coutHebergement')";
+    (:date, :lemotif, :lekm, :letrajet, :coutPeage,
+    :coutRepas, :coutHebergement)";
     $bdd->exec($requete);
     
     // Rediriger vers la page de confirmation
