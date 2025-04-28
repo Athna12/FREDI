@@ -16,6 +16,20 @@
             <text outputFile="php://stdout"/>
             <!-- Génère un rapport HTML dans le dossier coverage-report -->
             <html outputDirectory="coverage-report"/>
+            <!-- Ajoute un rapport Clover XML -->
+            <clover outputFile="coverage-reports/clover.xml"/>
+            <!-- Ajoute un rapport JUnit XML -->
+            <xml outputDirectory="coverage-reports/coverage-xml"/>
+            <!-- Ajoute un rapport Cobertura -->
+            <cobertura outputFile="coverage-reports/cobertura.xml"/>
         </report>
     </coverage>
+    <logging>
+        <!-- Génère un rapport de tests en XML format JUnit -->
+        <junit outputFile="test-reports/junit.xml"/>
+        <!-- Génère un rapport de tests en format texte -->
+        <testdoxText outputFile="test-reports/testdox.txt"/>
+        <!-- Génère un rapport de tests en HTML -->
+        <testdoxHtml outputFile="test-reports/testdox.html"/>
+    </logging>
 </phpunit>
