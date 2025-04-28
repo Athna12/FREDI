@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation
-    const tarifKmInput = document.getElementById('tarif_km');
     const addRowButton = document.getElementById('addRow');
     const fraisTable = document.getElementById('fraisTable').getElementsByTagName('tbody')[0];
     const totalGeneralInput = document.getElementById('total_general');
@@ -135,14 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Écouteur d'événement pour le bouton "Ajouter un adhérent"
     addAdherentBtn.addEventListener('click', addNewAdherent);
     
-    // Écouteur d'événement pour le changement de tarif kilométrique
-    tarifKmInput.addEventListener('input', function() {
-        const rows = fraisTable.querySelectorAll('.frais-row');
-        rows.forEach(function(row) {
-            calculateRowTotal(row);
-        });
-    });
-    
+   
    
     // Attacher les écouteurs d'événements à la première ligne
     const firstRow = fraisTable.querySelector('.frais-row');
