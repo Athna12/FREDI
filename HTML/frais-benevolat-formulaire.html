@@ -60,15 +60,15 @@
                     </thead>
                     <tbody>
                         <tr class="frais-row">
-                            <td><input type="date" name="date[]" required></td>
-                            <td><input type="text" name="motif[]" required></td>
-                            <td><input type="text" name="trajet[]" required></td>
-                            <td><input type="number" name="km[]" class="km" required min="0"></td>
-                            <td><input type="number" name="cout_trajet[]" class="cout-trajet" readonly step="0.01"></td>
-                            <td><input type="number" name="peages[]" class="peages" min="0" value="0" step="0.01"></td>
-                            <td><input type="number" name="repas[]" class="repas" min="0" value="0" step="0.01"></td>
-                            <td><input type="number" name="hebergement[]" class="hebergement" min="0" value="0" step="0.01"></td>
-                            <td><input type="number" name="total[]" class="total-ligne" readonly step="0.01"></td>
+                            <td><input type="date" id="datee" name="date" required></td>
+                            <td><input type="text" id="motif" name="motif" required></td>
+                            <td><input type="text" id="trajet" name="trajet" required></td>
+                            <td><input type="number" id="km" name="km" class="km" required min="0"></td>
+                            <td><input type="number"  name="cout_trajet" class="cout-trajet" readonly step="0.01"></td>
+                            <td><input type="number" id="cout_peage" name="peages" class="peages" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" id="cout_repas" name="repas" class="repas" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" id="cout_hebergement" name="hebergement" class="hebergement" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="total" class="total-ligne" readonly step="0.01"></td>
                             <td><button type="button" class="delete-row">Supprimer</button></td>
                         </tr>
                     </tbody>
