@@ -4,7 +4,7 @@ include("connexionBDD.php");
     // Traitement des lignes de frais
     $date = $_POST['datee'];
     $lemotif = $_POST['motif'];
-    $km = $_Post['km'];
+    $lekm = $_POST['km'];
     $letrajet = $_POST['trajet'];
     $coutPeage = $_POST['cout_peage'];
     $coutRepas = $_POST['cout_repas'];
@@ -15,9 +15,9 @@ include("connexionBDD.php");
 
     $requete = "INSERT INTO lignes_frais 
     (datee, motif, km, trajet, cout_peage,
-    cout_repas, cout_hebergement, total)
+    cout_repas, cout_hebergement)
     VALUES 
-    ('$date', '$lemotif', '$km', '$letrajet', '$coutPeage',
+    ('$date', '$lemotif', '$lekm', '$letrajet', '$coutPeage',
     '$coutRepas', '$coutHebergement')";
     $bdd->exec($requete);
     
