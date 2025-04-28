@@ -1,0 +1,10 @@
+Enreg Details
+ [x] Format numero licence invalide
+ [x] Format code postal invalide
+ [x] Numero telephone invalide
+ [ ] Erreur p d o prepare
+ [ ] Double insertion meme numero licence
+ [x] Validation des donnees
+ [x] Redirection apres insertion
+ [ ] Regles metier
+
