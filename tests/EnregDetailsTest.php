@@ -34,7 +34,7 @@ class EnregDetailsTest extends TestCase
     }
 
     /**
-     * Initialise $_POST avec des données par défaut, avec possibilité de les surcharger.
+     * Initialise $_POST avec des données par défaut.
      */
     private function setPostData(array $overrides = []): void
     {

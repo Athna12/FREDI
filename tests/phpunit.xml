@@ -2,17 +2,17 @@
 <phpunit bootstrap="../vendor/autoload.php">
     <testsuites>
         <testsuite name="UnitTests">
-            <!-- Change tests directory to match actual location -->
+            <!-- Modifier le répertoire des tests pour correspondre à l'emplacement réel -->
             <directory>.</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
-            <!-- Update path to match actual source files -->
+            <!-- Mettre à jour le chemin pour correspondre aux fichiers source réels -->
             <directory suffix=".php">../HTML</directory>
         </include>
         <report>
-            <!-- Change paths to be relative to phpunit.xml location -->
+            <!-- Modifier les chemins pour être relatifs à l'emplacement de phpunit.xml -->
             <text outputFile="php://stdout"/>
             <!-- Génère un rapport HTML dans le dossier coverage-report -->
             <html outputDirectory="../coverage-report"/>
@@ -25,7 +25,7 @@
         </report>
     </coverage>
     <logging>
-        <!-- Update paths to be relative to phpunit.xml location -->
+        <!-- Mettre à jour les chemins pour être relatifs à l'emplacement de phpunit.xml -->
         <junit outputFile="../test-reports/junit.xml"/>
         <!-- Génère un rapport de tests en format texte -->
         <testdoxText outputFile="../test-reports/testdox.txt"/>

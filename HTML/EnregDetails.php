@@ -123,7 +123,7 @@ try {
         throw new PDOException("Erreur lors de l'insertion des données");
     }
 
-    // Vérification explicite du succès avant la redirection
+    // Vérification du succès avant la redirection
     if (!sendResponse("confirmation_creation_de_compte.html")) {
         return;
     }

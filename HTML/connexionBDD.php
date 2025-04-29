@@ -1,6 +1,6 @@
 <?php
 if (php_sapi_name() === 'cli') {
-    // Mock PDO plus robuste pour les tests
+    // Simulation PDO pour les tests
     $bdd = new class {
         private $shouldThrowError = false;
         private $mockData = 0;
@@ -34,26 +34,23 @@ if (php_sapi_name() === 'cli') {
     return;
 }
 
-// Code normal pour l'exécution en production
+// Code pour l'exécution normale
 require_once __DIR__.'/SessionManager.php';
 SessionManager::startSession();
 
-// ... reste de votre connexion PDO normale
-
-
-	$server="localhost";
-	$db="fredi";
-	$user="root";
-	$password="";
-	
-	try
-		{
-			//	connexion au serveur de données et à la base
-				$bdd = new PDO("mysql:host=$server; dbname=$db;charset=utf8", $user,$password,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-		}
-	//	gestion d’erreur
-	catch (Exception $e)
-		{
-			die('Erreur : ' . $e->getMessage());
-		}
+    $server="localhost";
+    $db="fredi";
+    $user="root";
+    $password="";
+    
+    try
+        {
+            // Connexion au serveur de données et à la base
+                $bdd = new PDO("mysql:host=$server; dbname=$db;charset=utf8", $user,$password,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        }
+    // Gestion des erreurs
+    catch (Exception $e)
+        {
+            die('Erreur : ' . $e->getMessage());
+        }
 ?>
