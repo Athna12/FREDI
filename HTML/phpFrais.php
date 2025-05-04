@@ -104,40 +104,20 @@ try {
     // Exécution de la requête
     $result = $requete->execute();
     
-    /*if ($result) {
-        echo "<p style='color: green;'>Requête exécutée avec succès!</p>";
-        echo "<p>ID de la dernière insertion : " . $bdd->lastInsertId() . "</p>";
-        
-        
-        // Partie réservée à l'association (peut être vide)
-        $num_recu = isset($_POST['num_recu']) ? $_POST['num_recu'] : '';
-        $date_remise = isset($_POST['date_remise']) ? $_POST['date_remise'] : '';
-        
-        
-        // Bouton pour continuer
-        echo "<p><a href='confirmation.php'>Continuer vers la page de confirmation</a></p>";
+    if ($result) {
+        // Redirection vers la page d'accueil
+        header('Location: FrediAcceuil.html');
+        exit();
     } else {
-        echo "<p style='color: red;'>Échec de l'exécution de la requête.</p>";
-        echo "<p>Info PDO : </p>";
-        echo "<pre>";
-        print_r($requete->errorInfo());
-        echo "</pre>";
-    }*/
+        // En cas d'erreur, redirection avec message
+        $_SESSION['erreur'] = "Erreur lors de l'enregistrement de la note de frais";
+        header('Location: FrediAcceuil.html');
+        exit();
+    }
 } catch (PDOException $e) {
-    // Gestion des erreurs
-   /* echo "<h2 style='color: red;'>Erreur</h2>";
-    echo "<p>Une erreur est survenue lors de l'enregistrement des données :</p>";
-    echo "<pre>" . $e->getMessage() . "</pre>";
-    echo "<p>Code d'erreur : " . $e->getCode() . "</p>";
-    
-    echo "<p>Requête SQL avec les valeurs :</p>";
-    echo "<pre>INSERT INTO lignes_frais (datee, motif, km, trajet, cout_peages, cout_repas, cout_hebergement, adresse_mail)
-    VALUES ('$date', '$motif', '$km', '$trajet', '$peages', '$repas', '$hebergement', '$adresse_mail')</pre>";*/
-    
-    // Stockage de l'erreur en session
+    // En cas d'exception, redirection avec message d'erreur
     $_SESSION['erreur'] = "Erreur lors de l'enregistrement de la note de frais: " . $e->getMessage();
     header('Location: FrediAcceuil.html');
     exit();
-    
 }
 ?>
