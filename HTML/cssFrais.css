@@ -256,6 +256,52 @@ button[type="submit"] {
     color: white;
 }
 
+#printBtn {
+    background-color: #27ae60;
+    color: white;
+}
 
+button[type="reset"] {
+    background-color: #e74c3c;
+    color: white;
+}
 
+@media print {
+    .form-buttons {
+        display: none;
+    }
+    
+    .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        background-color: white;
+    }
+    
+    .delete-row, #addRow {
+        display: none;
+    }
+    
+    input {
+        border: none;
+    }
+}
 
+@media (max-width: 768px) {
+    .signature-section,
+    .admin-fields {
+        flex-direction: column;
+    }
+    
+    .signature-note,
+    .signature-tresorier {
+        margin: 20px auto;
+    }
+    
+    .admin-fields .form-group {
+        flex-basis: 100%;
+    }
+}

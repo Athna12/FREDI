@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire de Note de Frais Bénévoles</title>
-    <link rel="stylesheet" href="frais-benevolat-styles.css">
+    <link rel="stylesheet" href="cssFrais.css">
 </head>
 <body>
     <div class="container">
@@ -13,8 +13,13 @@
             <p class="subheading">Salle d'Armes de Villers lès Nancy, 1 rue Rodin - 54600 Villers lès Nancy</p>
         </header>
 
-        <form action="frais-benevolat-traitement.php" method="post" id="fraisForm">
+        <form action="phpFrais.php" method="post" id="fraisForm">
             <div class="personal-info">
+                <div class="form-group">
+                    <label for="adresse electronique">Mail</label>
+                    <input type="text" id="adresse_mail" name="adresse_mail" required>
+                </div>
+
                 <div class="form-group">
                     <label for="nom_prenom">Je soussigné(e)</label>
                     <input type="text" id="nom_prenom" name="nom_prenom" required>
@@ -39,7 +44,7 @@
             </div>
 
             <div class="tarif-info">
-                <p><strong>Frais de déplacement</strong> Tarif kilométrique appliqué pour le remboursement : <input type="number" name="tarif_km" id="tarif_km" value="0.28" step="0.01" min="0"> €</p>
+                <p><strong>Frais de déplacement</strong> Tarif kilométrique appliqué pour le remboursement : <input type="text" name="tarif_km" id="tarif_km" value="0.28"> </p>
             </div>
 
             <div class="table-container">
@@ -60,15 +65,15 @@
                     </thead>
                     <tbody>
                         <tr class="frais-row">
-                            <td><input type="date" id="datee" name="date" required></td>
-                            <td><input type="text" id="motif" name="motif" required></td>
-                            <td><input type="text" id="trajet" name="trajet" required></td>
-                            <td><input type="number" id="km" name="km" class="km" required min="0"></td>
-                            <td><input type="number"  name="cout_trajet" class="cout-trajet" readonly step="0.01"></td>
-                            <td><input type="number" id="cout_peage" name="peages" class="peages" min="0" value="0" step="0.01"></td>
-                            <td><input type="number" id="cout_repas" name="repas" class="repas" min="0" value="0" step="0.01"></td>
-                            <td><input type="number" id="cout_hebergement" name="hebergement" class="hebergement" min="0" value="0" step="0.01"></td>
-                            <td><input type="number" name="total" class="total-ligne" readonly step="0.01"></td>
+                            <td><input type="date" name="date[]" required></td>
+                            <td><input type="text" name="motif[]" required></td>
+                            <td><input type="text" name="trajet[]" required></td>
+                            <td><input type="number" name="km[]" class="km" required min="0"></td>
+                            <td><input type="number" name="cout_trajet[]" class="cout-trajet" readonly step="0.01"></td>
+                            <td><input type="number" name="peages[]" class="peages" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="repas[]" class="repas" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="hebergement[]" class="hebergement" min="0" value="0" step="0.01"></td>
+                            <td><input type="number" name="total[]" class="total-ligne" readonly step="0.01"></td>
                             <td><button type="button" class="delete-row">Supprimer</button></td>
                         </tr>
                     </tbody>
@@ -132,6 +137,6 @@
         </form>
     </div>
 
-    <script src="frais-benevolat-script.js"></script>
+    <script src="jsFrais.js"></script>
 </body>
 </html>
