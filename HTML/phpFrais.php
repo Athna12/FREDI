@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Activer l'affichage des erreurs pour le débogage
-ini_set('display_errors', 1);
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
@@ -21,7 +21,7 @@ if (!isset($_POST) || empty($_POST)) {
 echo "<h3>Données reçues du formulaire :</h3>";
 echo "<pre>";
 print_r($_POST);
-echo "</pre>";
+echo "</pre>";*/
 
 // Récupération des données du formulaire et traitement des éventuels tableaux
 $date = is_array($_POST['date']) ? implode(", ", $_POST['date']) : $_POST['date'];
@@ -70,7 +70,7 @@ if (isset($_POST['hebergement'])) {
 
 // Préparation et exécution de la requête avec des paramètres liés (protection contre les injections SQL)
 try {
-    echo "<h3>Valeurs après traitement :</h3>";
+   /* echo "<h3>Valeurs après traitement :</h3>";
     echo "<ul>";
     echo "<li>Date: " . $date . "</li>";
     echo "<li>Motif: " . $motif . "</li>";
@@ -80,7 +80,7 @@ try {
     echo "<li>Repas: " . $repas . "</li>";
     echo "<li>Hébergement: " . $hebergement . "</li>";
     echo "<li>Adresse email: " . $adresse_mail . "</li>";
-    echo "</ul>";
+    echo "</ul>";*/
     
     // Construction de la requête SQL avec le champ adresse_mail
     $sql = "INSERT INTO lignes_frais 
@@ -88,7 +88,7 @@ try {
         VALUES 
         (:date, :motif, :km, :trajet, :peages, :repas, :hebergement, :adresse_mail)";
     
-    echo "<p>Requête SQL préparée : " . $sql . "</p>";
+    //echo "<p>Requête SQL préparée : " . $sql . "</p>";
     
     $requete = $bdd->prepare($sql);
     
@@ -104,7 +104,7 @@ try {
     // Exécution de la requête
     $result = $requete->execute();
     
-    if ($result) {
+    /*if ($result) {
         echo "<p style='color: green;'>Requête exécutée avec succès!</p>";
         echo "<p>ID de la dernière insertion : " . $bdd->lastInsertId() . "</p>";
         
@@ -122,21 +122,22 @@ try {
         echo "<pre>";
         print_r($requete->errorInfo());
         echo "</pre>";
-    }
+    }*/
 } catch (PDOException $e) {
     // Gestion des erreurs
-    echo "<h2 style='color: red;'>Erreur</h2>";
+   /* echo "<h2 style='color: red;'>Erreur</h2>";
     echo "<p>Une erreur est survenue lors de l'enregistrement des données :</p>";
     echo "<pre>" . $e->getMessage() . "</pre>";
     echo "<p>Code d'erreur : " . $e->getCode() . "</p>";
     
     echo "<p>Requête SQL avec les valeurs :</p>";
     echo "<pre>INSERT INTO lignes_frais (datee, motif, km, trajet, cout_peages, cout_repas, cout_hebergement, adresse_mail)
-    VALUES ('$date', '$motif', '$km', '$trajet', '$peages', '$repas', '$hebergement', '$adresse_mail')</pre>";
+    VALUES ('$date', '$motif', '$km', '$trajet', '$peages', '$repas', '$hebergement', '$adresse_mail')</pre>";*/
     
     // Stockage de l'erreur en session
     $_SESSION['erreur'] = "Erreur lors de l'enregistrement de la note de frais: " . $e->getMessage();
+    header('Location: FrediAcceuil.html');
+    exit();
     
-    echo "<p><a href='javascript:history.back()'>Retour au formulaire</a></p>";
 }
 ?>
